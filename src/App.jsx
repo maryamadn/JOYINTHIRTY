@@ -1,32 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const api_key = 'YjZhOGJkYzYtMmY3Zi00ZjgxLTg4NmUtYWZmNDljY2UzZjcy'
+  const type = '&type=track' //diff categories of search gives diff. if not specified(dropdown) just get track?/all?
+  const input = 'tomboy'
+
+  fetch(`https://api.napster.com/v2.2/search?apikey=${api_key}&query=${input}${type}`)
+  .then((response) => response.json())
+  .then((data) => console.log(data));
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>music.</h1>
+      <audio
+      src='https://listen.hs.llnwd.net/g3/prvw/3/0/7/8/2/2351128703.mp3'
+      autoPlay
+      controls
+      />
     </div>
   )
 }
