@@ -1,28 +1,63 @@
-
-import { useState } from 'react'
-import './App.css'
+import "./App.css";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ForgotPw from "../Pages/Account/ForgotPw";
+import SignIn from "../Pages/Account/SignIn";
+import SignUp from "../Pages/Account/SignUp";
+import Start from "../Pages/Account/Start";
+import LayoutFooter from "../Pages/Music/LayoutFooter";
+import LayoutHeader from "../Pages/Music/LayoutHeader";
+import Home from "../Pages/Music/Home";
+import Playlists from "../Pages/Music/Playlists";
+import EachPlaylist from "../Pages/Music/EachPlaylist";
+import Search from "../Pages/Music/Search";
+import SearchDefault from "../Pages/Music/SearchDefault";
+import SearchResults from "../Pages/Music/SearchResults";
+import Stats from "../Pages/Music/Stats";
+import Account from "../Pages/Music/Account";
 
 function App() {
-  const [track, setTrack] = useState('')
+  const [track, setTrack] = useState("");
 
-  const api_key = 'YjZhOGJkYzYtMmY3Zi00ZjgxLTg4NmUtYWZmNDljY2UzZjcy'
-  const type = '&type=track' //diff categories of search gives diff. if not specified(dropdown) just get track?/all?
-  const input = 'tomboy'
+  const api_key = "YjZhOGJkYzYtMmY3Zi00ZjgxLTg4NmUtYWZmNDljY2UzZjcy";
+  const type = "&type=track"; //diff categories of search gives diff. if not specified(dropdown) just get track?/all?
+  const input = "tomboy";
 
-  fetch(`https://api.napster.com/v2.2/search?apikey=${api_key}&query=${input}${type}`)
-  .then((response) => response.json())
-  .then((data) => setTrack(data.search.data.tracks[0].previewurl));
+  // useEffect(() => {
+  fetch(
+    `https://api.napster.com/v2.2/search?apikey=${api_key}&query=${input}${type}`
+  )
+    .then((response) => response.json())
+    .then((data) => setTrack(data.search.data.tracks[0].previewURL));
+  // }, [])
 
   return (
-    <div className="App">
-      <h1>music.</h1>
-      <audio
-      src={track}
-      autoPlay
-      controls
-      />
-    </div>
-  )
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Start />}>
+            <Route index element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgotpw" element={<ForgotPw />} />
+          </Route>
+          <Route path={"/user"} element={<LayoutFooter />}>
+            <Route index element={<Home />} />
+            <Route path={"/user"} element={<LayoutHeader />}>
+              <Route path="/user/playlists" element={<Playlists />}>
+                <Route path={`/user/playlists/playlistname`} element={<EachPlaylist />} />
+              </Route>
+              <Route path="/user/search" element={<Search />}>
+                <Route index element={<SearchDefault />} />
+                <Route path="/user/search/results" element={<SearchResults />} />
+              </Route>
+              <Route path="/user/stats" element={<Stats />} />
+              <Route path="/user/account" element={<Account />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
 }
 
-export default App
+export default App;
