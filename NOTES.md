@@ -1,3 +1,6 @@
+## to do
+- create and set userDetails state, context provider.
+
 ## LYRICS
 - 
 
@@ -26,3 +29,6 @@ https://www.w3schools.com/css/css_dropdowns.asp
 
 ## search input w icon
 https://www.w3schools.com/css/css_form.asp
+
+## local storage
+https://blog.logrocket.com/using-localstorage-react-hooks/
