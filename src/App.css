@@ -6,6 +6,7 @@ body {
 
 #header, #footer {
     background-color: aqua;
+    height: 50vh;
 }
 
 @keyframes hideDiv {
@@ -20,6 +21,7 @@ body {
     background-color: red;
     opacity: 0.8;
     text-align: center;
+    z-index: 1;
 }
 
 .hideWelcomeDiv {
@@ -30,4 +32,31 @@ body {
 
 .hideOverflow {
     overflow: hidden;
+}
+
+#home div {
+    background-color: pink;
+    margin: 200px;
+    text-align: center;
+    font-size: 30px;
+}
+
+/* #nowPlaying p {
+    display: inline;
+    font-size: 10px;
+} */
+
+#nowPlaying {
+    position: fixed;
+    bottom: 0;
+    z-index: 0;
+}
+
+.maximised {
+    height: 100vh;
+    width: 100vw;
+    /* position: absolute;
+    top: 0; */
+    background-color: navy;
+    color: white;
 }

@@ -49,7 +49,7 @@ https://stackoverflow.com/questions/41278385/setstate-doesnt-update-the-state-im
 
 ## react toastify
 
-replace error
+replace error alert
 https://www.npmjs.com/package/react-toastify
 
 ## react component transition
