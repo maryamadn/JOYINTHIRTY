@@ -16,31 +16,47 @@ import Stats from "../Pages/Music/Stats";
 import Account from "../Pages/Music/Account";
 
 function App() {
-  const [track, setTrack] = useState("");
+  const [userDetails, setUserDetails] = useState({});
+  // const [track, setTrack] = useState("");
 
-  const api_key = "YjZhOGJkYzYtMmY3Zi00ZjgxLTg4NmUtYWZmNDljY2UzZjcy";
-  const type = "&type=track"; //diff categories of search gives diff. if not specified(dropdown) just get track?/all?
-  const input = "tomboy";
+  // const api_key = "YjZhOGJkYzYtMmY3Zi00ZjgxLTg4NmUtYWZmNDljY2UzZjcy";
+  // const type = "&type=track"; //diff categories of search gives diff. if not specified(dropdown) just get track?/all?
+  // const input = "tomboy";
 
-  // useEffect(() => {
-  fetch(
-    `https://api.napster.com/v2.2/search?apikey=${api_key}&query=${input}${type}`
-  )
-    .then((response) => response.json())
-    .then((data) => setTrack(data.search.data.tracks[0].previewURL));
-  // }, [])
+  // // useEffect(() => {
+  // fetch(
+  //   `https://api.napster.com/v2.2/search?apikey=${api_key}&query=${input}${type}`
+  // )
+  //   .then((response) => response.json())
+  //   .then((data) => setTrack(data.search.data.tracks[0].previewURL));
+  // // }, [])
+
+  // localStorage.clear();
+  console.log(localStorage);
+  console.log(userDetails);
 
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Start />}>
-            <Route index element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route
+              index
+              element={
+                <SignIn
+                  userDetails={userDetails}
+                  setUserDetails={setUserDetails}
+                />
+              }
+            />
+            <Route
+              path="/signup"
+              element={<SignUp setUserDetails={setUserDetails} />}
+            />
             <Route path="/forgotpw" element={<ForgotPw />} />
           </Route>
-          <Route path="/user" element={<Layout />}>
-            <Route index element={<Home />} />
+          <Route path="/user" element={<Layout userDetails={userDetails} />}>
+            <Route index element={<Home userDetails={userDetails} />} />
             <Route path="/user/playlists" element={<Playlists />}>
               <Route
                 path={`/user/playlists/playlistname`}

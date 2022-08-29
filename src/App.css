@@ -1,3 +1,33 @@
 body {
     font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#header, #footer {
+    background-color: aqua;
+}
+
+@keyframes hideDiv {
+    from {top: 0;}
+    to {top: -100vh;}
+}
+
+#welcomeDiv {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: red;
+    opacity: 0.8;
+    text-align: center;
+}
+
+.hideWelcomeDiv {
+    animation-name: hideDiv;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.hideOverflow {
+    overflow: hidden;
 }
