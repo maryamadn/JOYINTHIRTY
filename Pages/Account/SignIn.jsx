@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignIn = ({ userDetails, setUserDetails }) => {
+const SignIn = ({ setUserDetails }) => {
   const navigate = useNavigate();
   const usernameRef = useRef();
   const passwordRef = useRef();

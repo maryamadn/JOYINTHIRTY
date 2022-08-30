@@ -34,6 +34,7 @@ https://stackoverflow.com/questions/69870116/how-can-i-keep-song-playing-in-reac
 ## drop down
 
 https://www.w3schools.com/css/css_dropdowns.asp
+!!!!! do such that they click anywhere can close menu
 
 ## search input w icon
 
@@ -55,3 +56,9 @@ https://www.npmjs.com/package/react-toastify
 ## react component transition
 
 https://blog.openreplay.com/how-to-add-animations-with-react-transition-group
+
+## duration, get playback, change seconds to ##:##
+
+## issues
+
+why in fetching search results, the console.log object is inaccurate

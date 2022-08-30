@@ -18,6 +18,8 @@ import Account from "../Pages/Music/Account";
 function App() {
   const [userDetails, setUserDetails] = useState({});
 
+  const [results, setResults] = useState([]);
+
   // localStorage.clear();
   console.log(localStorage);
   console.log(userDetails);
@@ -50,9 +52,15 @@ function App() {
                 element={<EachPlaylist />}
               />
             </Route>
-            <Route path="/user/search" element={<Search />}>
+            <Route
+              path="/user/search"
+              element={<Search setResults={setResults} />}
+            >
               <Route index element={<SearchDefault />} />
-              <Route path="/user/search/results" element={<SearchResults />} />
+              <Route
+                path="/user/search/results"
+                element={<SearchResults results={results} />}
+              />
             </Route>
             <Route path="/user/stats" element={<Stats />} />
             <Route path="/user/account" element={<Account />} />

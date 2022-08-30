@@ -1,22 +1,54 @@
-const SearchResults = () => {
+import { useState } from "react";
+
+const SearchResults = ({ results }) => {
+  // const [playlist, setPlaylist] = useState([]);
+  const [library, setLibrary] = useState([]);
+
+  const handleDropdown = (index) => {
+    document
+      .getElementById(`dropdown-content-${index}`)
+      .classList.toggle("dropdown-content");
+  };
+
+  const handleAddToNewPlaylist = (result) => {
+    const newPlaylist = [];
+    newPlaylist.push(result);
+    console.log(newPlaylist);
+    setLibrary([...library, newPlaylist]);
+  };
+
+  const handleAddToExistingPlaylist = () => {
+    console.log("add to existing playlist");
+  };
+
   return (
     <>
-      <h3>Track Name</h3>
-      <h3>Artist</h3>
-      <h3>Duration</h3>
-      <div>
-        <img src="" alt="track image" />
-        <p>track name</p>
-        <p>artist</p>
-        <p>00:30</p>
-        <div class="dropdown">
-          <p>3 dots</p>
-          <div class="dropdown-content">
-            <p>remove from playlist</p>
-            <p>add to other/new playlist</p>
+      <p>Track Name | Artist | Duration</p>
+      {results.map((result, index) => (
+        <div key={index}>
+          <p>
+            {result.title}, {result.artist}, {result.duration}
+          </p>
+          <audio src={result.url} controls />
+          <img src={result.image} width="100px" />
+
+          <div id="dropdown-container">
+            <button onClick={() => handleDropdown(index)} id="dropdown-button">
+              add to playlist
+            </button>
+            <div id={`dropdown-content-${index}`} className="dropdown-content">
+              <ul>
+                <li onClick={() => handleAddToNewPlaylist(result)}>
+                  new playlist
+                </li>
+                {library.map}
+                <li onClick={handleAddToExistingPlaylist}>playlist 1</li>
+                <li onClick={handleAddToExistingPlaylist}>playlist 2</li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
+      ))}
 
       <button>.. prev page</button>
       <button>next page ..</button>
@@ -24,4 +56,4 @@ const SearchResults = () => {
   );
 };
 
-export default SearchResults
+export default SearchResults;
