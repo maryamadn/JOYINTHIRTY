@@ -1,62 +1,68 @@
 body {
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 8vh;
 }
 
-#header, #footer {
-    background-color: aqua;
-    height: 50vh;
+#header,
+#footer {
+  background-color: aqua;
 }
 
 @keyframes hideDiv {
-    from {top: 0;}
-    to {top: -100vh;}
+  from {
+    top: 0;
+  }
+  to {
+    top: -100vh;
+  }
 }
 
 #welcomeDiv {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    background-color: red;
-    opacity: 0.8;
-    text-align: center;
-    z-index: 1;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: red;
+  opacity: 0.8;
+  text-align: center;
+  z-index: 1;
 }
 
 .hideWelcomeDiv {
-    animation-name: hideDiv;
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
+  animation-name: hideDiv;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
 }
 
 .hideOverflow {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 #home div {
-    background-color: pink;
-    margin: 200px;
-    text-align: center;
-    font-size: 30px;
+  background-color: pink;
+  margin: 200px;
+  text-align: center;
+  font-size: 30px;
 }
 
-/* #nowPlaying p {
-    display: inline;
-    font-size: 10px;
-} */
+#nowPlaying p {
+  display: inline;
+  font-size: 10px;
+}
 
 #nowPlaying {
-    position: fixed;
-    bottom: 0;
-    z-index: 0;
+  position: fixed;
+  bottom: 0;
+  z-index: 0;
+  background-color: navy;
+  opacity: 0.5;
+  color: white;
+  height: 8vh;
+  width: 100%;
 }
 
 .maximised {
-    height: 100vh;
-    width: 100vw;
-    /* position: absolute;
-    top: 0; */
-    background-color: navy;
-    color: white;
+  height: 100vh;
+  width: 100vw;
 }

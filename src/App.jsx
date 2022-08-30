@@ -17,19 +17,6 @@ import Account from "../Pages/Music/Account";
 
 function App() {
   const [userDetails, setUserDetails] = useState({});
-  // const [track, setTrack] = useState("");
-
-  // const api_key = "YjZhOGJkYzYtMmY3Zi00ZjgxLTg4NmUtYWZmNDljY2UzZjcy";
-  // const type = "&type=track"; //diff categories of search gives diff. if not specified(dropdown) just get track?/all?
-  // const input = "tomboy";
-
-  // // useEffect(() => {
-  // fetch(
-  //   `https://api.napster.com/v2.2/search?apikey=${api_key}&query=${input}${type}`
-  // )
-  //   .then((response) => response.json())
-  //   .then((data) => setTrack(data.search.data.tracks[0].previewURL));
-  // // }, [])
 
   // localStorage.clear();
   console.log(localStorage);

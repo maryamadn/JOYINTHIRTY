@@ -15,7 +15,7 @@ const SignUp = ({ setUserDetails }) => {
       const newUserDetails = {
         username: username,
         password: password,
-        playlists: [],
+        library: [],
       };
       localStorage.setItem(
         newUserDetails.username,
