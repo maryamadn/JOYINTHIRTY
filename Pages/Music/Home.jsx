@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
 const Home = ({ userDetails }) => {
-  console.log(userDetails);
-  console.log(localStorage);
+  // console.log(userDetails);
+  // console.log(localStorage);
 
   return (
     <>

@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-const SearchResults = ({ results }) => {
-  // const [playlist, setPlaylist] = useState([]);
-  const [library, setLibrary] = useState([]);
+const SearchResults = ({ results, library, setLibrary }) => {
+  const [values, setValues] = useState({});
 
   const handleDropdown = (index) => {
     document
@@ -10,41 +9,82 @@ const SearchResults = ({ results }) => {
       .classList.toggle("dropdown-content");
   };
 
-  const handleAddToNewPlaylist = (result) => {
-    const newPlaylist = [];
-    newPlaylist.push(result);
-    console.log(newPlaylist);
-    setLibrary([...library, newPlaylist]);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setValues({
+      [name]: value,
+    });
   };
 
-  const handleAddToExistingPlaylist = () => {
-    console.log("add to existing playlist");
+  const handleAddToNewPlaylist = (result, index) => {
+    console.log("lib", library);
+    const newPlaylistArray = [result];
+    const newPlaylist = {};
+    newPlaylist[values[index]] = newPlaylistArray;
+    values[index] = ""; //reset input field
+
+    setLibrary([...library, newPlaylist]);
+    document
+      .getElementById(`dropdown-content-${index}`)
+      .classList.toggle("dropdown-content");
+    alert("added to new playlist");
+  };
+
+  const handleAddToExistingPlaylist = (result, index, playlistName, playlist) => {
+    const withAddedTrack = playlist[playlistName]
+    console.log(playlist)
+    withAddedTrack.push(result)
+    console.log(playlist)
+    console.log(withAddedTrack)
+    const updatedLibrary = library
+    updatedLibrary[index][playlistName] = withAddedTrack
+    setLibrary(updatedLibrary)
+    // alert('added to playlist')
+    document
+    .getElementById(`dropdown-content-${index}`)
+    .classList.toggle("dropdown-content");
   };
 
   return (
     <>
-      <p>Track Name | Artist | Duration</p>
+      <p>Track Name</p>
+      <p>Artist</p>
+      <p>Duration</p>
       {results.map((result, index) => (
         <div key={index}>
-          <p>
-            {result.title}, {result.artist}, {result.duration}
-          </p>
-          <audio src={result.url} controls />
           <img src={result.image} width="100px" />
+          <p>{result.title}</p>
+          <p>{result.artist}</p>
+          <p>{result.duration}</p>
+          {/* <audio src={result.url} controls /> */}
 
           <div id="dropdown-container">
             <button onClick={() => handleDropdown(index)} id="dropdown-button">
-              add to playlist
+              +
             </button>
             <div id={`dropdown-content-${index}`} className="dropdown-content">
-              <ul>
-                <li onClick={() => handleAddToNewPlaylist(result)}>
-                  new playlist
-                </li>
-                {library.map}
-                <li onClick={handleAddToExistingPlaylist}>playlist 1</li>
-                <li onClick={handleAddToExistingPlaylist}>playlist 2</li>
-              </ul>
+              <div id="newPlaylistButton">
+                <p>new playlist</p>
+                <input
+                  id="newPlaylistNameInput"
+                  value={values[index] || ""}
+                  name={index}
+                  onChange={handleInputChange}
+                  placeholder="Playlist Name"
+                />
+                <button
+                  id="newPlaylistNameInputButton"
+                  onClick={() => handleAddToNewPlaylist(result, index)}
+                >
+                  create
+                </button>
+              </div>
+              <div id="newPlaylistButton">
+                {library.map((playlist, index) => {
+                  const playlistName = Object.keys(playlist)[0];
+                  return <button key={index} onClick={() => handleAddToExistingPlaylist(result, index, playlistName, playlist)}>{playlistName}</button>;
+                })}
+              </div>
             </div>
           </div>
         </div>

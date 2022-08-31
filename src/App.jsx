@@ -18,11 +18,15 @@ import Account from "../Pages/Music/Account";
 function App() {
   const [userDetails, setUserDetails] = useState({});
 
+  const [library, setLibrary] = useState([]);
+
+  const [nowPlaying, setNowPlaying] = useState([]);
+
   const [results, setResults] = useState([]);
 
   // localStorage.clear();
-  console.log(localStorage);
-  console.log(userDetails);
+  // console.log(localStorage);
+  // console.log(userDetails);
 
   return (
     <>
@@ -44,14 +48,21 @@ function App() {
             />
             <Route path="/forgotpw" element={<ForgotPw />} />
           </Route>
-          <Route path="/user" element={<Layout userDetails={userDetails} />}>
+          <Route
+            path="/user"
+            element={
+              <Layout userDetails={userDetails} nowPlaying={nowPlaying} />
+            }
+          >
             <Route index element={<Home userDetails={userDetails} />} />
-            <Route path="/user/playlists" element={<Playlists />}>
-              <Route
-                path={`/user/playlists/playlistname`}
-                element={<EachPlaylist />}
-              />
-            </Route>
+            <Route
+              path="/user/playlists"
+              element={<Playlists library={library} setLibrary={setLibrary} />}
+            />
+            <Route
+              path={"/user/eachplaylist/:playlistIndex"}
+              element={<EachPlaylist library={library} setLibrary={setLibrary}/>}
+            />
             <Route
               path="/user/search"
               element={<Search setResults={setResults} />}
@@ -59,7 +70,13 @@ function App() {
               <Route index element={<SearchDefault />} />
               <Route
                 path="/user/search/results"
-                element={<SearchResults results={results} />}
+                element={
+                  <SearchResults
+                    results={results}
+                    library={library}
+                    setLibrary={setLibrary}
+                  />
+                }
               />
             </Route>
             <Route path="/user/stats" element={<Stats />} />

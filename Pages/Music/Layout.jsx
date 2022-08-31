@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import {
+  BsPlayFill,
+  BsPauseFill,
+  BsFillSkipStartFill,
+  BsFillSkipEndFill,
+  BsFillVolumeUpFill,
+} from "react-icons/bs";
+import { TbRepeatOnce, TbArrowsShuffle } from "react-icons/tb";
 
-const Layout = ({ userDetails }) => {
+const Layout = ({ userDetails, nowPlaying }) => {
   const handleRemoveWelcomeDiv = () => {
     document.getElementById("welcomeDiv").classList.add("hideWelcomeDiv");
     document.querySelector("body").classList.remove("hideOverflow");
@@ -11,15 +19,13 @@ const Layout = ({ userDetails }) => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 
-
-  const [isMaximised, setIsMaximised] = useState(false)
+  const [isMaximised, setIsMaximised] = useState(false);
 
   const handleNowPlayingSize = () => {
-      document.querySelector("body").classList.toggle("hideOverflow");
-      document.getElementById('nowPlaying').classList.toggle('maximised')
-      // document.getElementById('nowPlaying').classList.add('minimised')
-    setIsMaximised(!isMaximised)
-  }
+    document.querySelector("body").classList.toggle("hideOverflow");
+    document.getElementById("nowPlaying").classList.toggle("maximised");
+    setIsMaximised(!isMaximised);
+  };
 
   return (
     <>
@@ -61,17 +67,21 @@ const Layout = ({ userDetails }) => {
         <div id="nowPlaying">
           <p>Track Name</p>
           <p>Artist</p>
-          <p>track image</p>
-          <p>control icons</p>
-          <audio
-            src={"https://listen.hs.llnwd.net/g3/prvw/9/2/8/0/7/2636470829.mp3"}
-            controls
-          />
-          <p>duration</p>
-          <p>slider</p>
-          <p>volume</p>
-          <button onClick={handleNowPlayingSize}>{isMaximised ? 'minimise' : 'maximise'}</button>
-
+          <img src="" alt="result.image" />
+          <p>00:00</p>
+          <TbArrowsShuffle />
+          <BsFillSkipStartFill />
+          <BsPlayFill />
+          <BsPauseFill />
+          <BsFillSkipEndFill />
+          <TbRepeatOnce />
+          <BsFillVolumeUpFill />
+          <input type="range" />
+          <audio src={nowPlaying} controls />
+          <p>00:30</p>
+          <button onClick={handleNowPlayingSize}>
+            {isMaximised ? "minimise" : "maximise"}
+          </button>
         </div>
       </div>
     </>
@@ -79,3 +89,30 @@ const Layout = ({ userDetails }) => {
 };
 
 export default Layout;
+
+//HTMLMediaElement.duration
+//HTMLMediaElement.ended
+//HTMLMediaElement.loop (on repeat)
+//HTMLMediaElement.muted (check if muted)
+//HTMLMediaElement.paused
+//HTMLMediaElement.played ---- Returns a TimeRanges object that contains the ranges of the media source that the browser has played, if any.
+//HTMLMediaElement.src -- can be used to change the audio url?
+//HTMLMediaElement.volume
+//===================
+//HTMLMediaElement.fastSeek() can skip to certain timings
+//HTMLMediaElement.pause()
+//HTMLMediaElement.play()
+//===========events========
+//canplay: ///possibly when this event happens: show loading image/// === Fired when the user agent can play the media, but estimates that not enough data has been loaded to play the media up to its end without having to stop for further buffering of content.
+//ended: Fired when playback stops when end of the media (<audio> or <video>) is reached or because no further data is available.
+//error: Fired when the resource could not be loaded due to an error.
+//pause: Fired when a request to pause play is handled and the activity has entered its paused state, most commonly occurring when the media's HTMLMediaElement.pause() method is called.
+//play: Fired when the paused property is changed from true to false, as a result of the HTMLMediaElement.play() method, or the autoplay attribute.
+//seeked:Fired when a seek operation completes.
+//seeking: Fired when a seek operation begins.
+//volumechange: Fired when the volume has changed.
+//
+//
+//
+//
+//

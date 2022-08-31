@@ -59,6 +59,21 @@ https://blog.openreplay.com/how-to-add-animations-with-react-transition-group
 
 ## duration, get playback, change seconds to ##:##
 
-## issues
+## audio player
+slider - https://www.w3schools.com/jsref/dom_obj_range.asp
+design icons - https://stackoverflow.com/questions/56636280/how-to-style-react-icons
+https://github.com/react-icons/react-icons
 
-why in fetching search results, the console.log object is inaccurate
+## extra ft 
+- music video of the day? youtube api
+
+## issues
+1) ASK: how to check if url gives 404 error, wanna remove from the search result
+2) why in fetching search results, the console.log object is inaccurate
+
+## solved issues
+1) https://stackoverflow.com/questions/47012169/a-component-is-changing-an-uncontrolled-input-of-type-text-to-be-controlled-erro
+
+2) https://dev.to/deboragaleano/how-to-handle-multiple-inputs-in-react-55el
+
+3) https://bobbyhadz.com/blog/react-clear-input-after-submit 

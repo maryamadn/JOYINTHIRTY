@@ -5,12 +5,7 @@ const Search = ({ setResults }) => {
   const navigate = useNavigate();
   const [nowPlaying, setNowPlaying] = useState("?");
 
-  // const [playlist, setPlaylist] = useState([]);
-
-  const [libary, setLibrary] = useState([]); //refers to group of playlists
-
   const APIKEY = "YjZhOGJkYzYtMmY3Zi00ZjgxLTg4NmUtYWZmNDljY2UzZjcy";
-  // const APIKEY = 'YTkxZTRhNzAtODdlNy00ZjMzLTg0MWItOTc0NmZmNjU4Yzk4'
   const type = "track"; //diff categories of search gives diff. if not specified(dropdown) just get track?/all?
 
   const queryRef = useRef();
@@ -33,7 +28,6 @@ const Search = ({ setResults }) => {
             "image"
           ] = `https://api.napster.com/imageserver/v2/albums/${track.albumId}/images/500x500.jpg`;
 
-          // console.log(result);
           if (a.length === 0) {
             a.push(result);
           } else {

@@ -63,8 +63,8 @@ body {
 }
 
 .maximised {
-  height: 100vh;
-  width: 100vw;
+  height: 100vh !important;
+  width: 100vw !important;
 }
 
 /* dropdown options */
@@ -90,19 +90,51 @@ body {
   display: none;
 }
 
-ul {
+/* ul {
   list-style: none;
   padding: 0;
   margin: 0;
-}
+} */
 
 
-li {
+/* li {
   padding: 8px 12px;
 }
 
 li:hover {
   background-color: lime;
+} */
+
+#newPlaylistNameInput, #newPlaylistNameInputButton {
+  display: none;
 }
 
+#newPlaylistButton:hover #newPlaylistNameInput, #newPlaylistButton:hover #newPlaylistNameInputButton {
+  display: inline-block !important;
+}
 
+#newPlaylistNameInput:focus {
+  display: inline-block;
+}
+
+#newPlaylistNameInput:focus + button{
+  display: inline-block;
+}
+
+/* playlists page css */
+
+#playlists-page-newPlaylistNameInput, #playlists-page-newPlaylistNameInputButton {
+  display: none;
+}
+
+#playlists-page-newPlaylistButton:hover #playlists-page-newPlaylistNameInput, #playlists-page-newPlaylistButton:hover #playlists-page-newPlaylistNameInputButton {
+  display: inline-block !important;
+}
+
+#playlists-page-newPlaylistNameInput:focus {
+  display: inline-block;
+}
+
+#playlists-page-newPlaylistNameInput:focus + button {
+  display: inline-block;
+}
