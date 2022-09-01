@@ -14,7 +14,7 @@ const Search = ({ setResults }) => {
     if (query === "") {
       alert("please input a valid entry");
     } else {
-      const fetchSearch = `http://api.napster.com/v2.2/search/verbose?apikey=${APIKEY}&query=${query}&type=${type}&per_type_limit=200`;
+      const fetchSearch = `api.napster.com/v2.2/search/verbose?apikey=${APIKEY}&query=${query}&type=${type}&per_type_limit=200`;
       fetch(fetchSearch)
         .then((response) => response.json())
         .then((data) => {
