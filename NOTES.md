@@ -63,6 +63,8 @@ https://blog.openreplay.com/how-to-add-animations-with-react-transition-group
 slider - https://www.w3schools.com/jsref/dom_obj_range.asp
 design icons - https://stackoverflow.com/questions/56636280/how-to-style-react-icons
 https://github.com/react-icons/react-icons
+everything - https://www.youtube.com/watch?v=sqpg1qzJCGQ 
+- skip to next song...
 
 ## extra ft 
 - music video of the day? youtube api
@@ -70,6 +72,25 @@ https://github.com/react-icons/react-icons
 ## issues
 1) ASK: how to check if url gives 404 error, wanna remove from the search result
 2) why in fetching search results, the console.log object is inaccurate
+3)   // updating progressBar everytime current time of audio changes
+  useEffect(() => {
+    const seconds = Math.floor(audioPlayer.current.duration); //get rid of decimals (round down)
+    setDuration(seconds);
+    progressBar.current.max = seconds; //states that the max of progress bar is .. seconds
+  }, [audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState]);
+
+4) do i rlly need playlist state?
+5) change buttons to just pics...
+7) play/pause button between in page and in player && when a song is playing and that same song is pressed
+on a page, it wont restart, just continue. but the array is changed
+8) can tgo too fast, need to load
+
+
+## future possible implementations
+- if (nowPlaying?.array?.[nowPlaying.index]?.url === audioPlayer.current.currentSrc)..
+if next/prev song is same/duplicate will need to skip twice....
+- search based on diff categories (dropdown choice)
+
 
 ## solved issues
 1) https://stackoverflow.com/questions/47012169/a-component-is-changing-an-uncontrolled-input-of-type-text-to-be-controlled-erro
@@ -77,3 +98,4 @@ https://github.com/react-icons/react-icons
 2) https://dev.to/deboragaleano/how-to-handle-multiple-inputs-in-react-55el
 
 3) https://bobbyhadz.com/blog/react-clear-input-after-submit 
+4) shuffle: https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj 

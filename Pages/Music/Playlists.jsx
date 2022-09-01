@@ -21,30 +21,38 @@ const Playlists = ({ library, setLibrary }) => {
   };
 
   const handleRenamePlaylist = (playlistIndex, playlistName) => {
-    console.log("renamed playlist");
-    const updatedLibrary = [...library];
-    updatedLibrary[playlistIndex][values.rename] =
-      updatedLibrary[playlistIndex][playlistName];
-    delete updatedLibrary[playlistIndex][playlistName]
-    console.log(updatedLibrary)
-    setLibrary(updatedLibrary)
-    values.rename = ""; //reset input field
+    if (values.rename === "" || values.rename === undefined) {
+      console.log("alert tkle");
+    } else if (values.rename === playlistName) {
+      console.log("identical name entered");
+    } else {
+      const updatedLibrary = [...library];
+      updatedLibrary[playlistIndex][values.rename] =
+        updatedLibrary[playlistIndex][playlistName];
+      delete updatedLibrary[playlistIndex][playlistName];
+
+      setLibrary(updatedLibrary);
+      values.rename = ""; //reset input field
+    }
   };
 
   const handleDeletePlaylist = (playlistIndex) => {
     const updatedLibrary = [...library];
     updatedLibrary.splice(playlistIndex, 1);
     setLibrary(updatedLibrary);
-    console.log("deleted playlist");
   };
 
-  const handleAddToNewPlaylist = () => {
-    const newPlaylist = {};
-    newPlaylist[values.name] = [];
-    values.name = ""; //reset input field
+  const handleAddNewPlaylist = () => {
+    if (values.name === "" || values.name === undefined) {
+      console.log("alert tkle");
+    } else {
+      const newPlaylist = {};
+      newPlaylist[values.name] = [];
+      values.name = ""; //reset input field
 
-    setLibrary([...library, newPlaylist]);
-    alert("added new playlist");
+      setLibrary([...library, newPlaylist]);
+      alert("added new playlist");
+    }
   };
 
   return (
@@ -57,10 +65,7 @@ const Playlists = ({ library, setLibrary }) => {
             <Link to={`/user/eachplaylist/${playlistIndex}`}>
               {playlistName}
             </Link>
-            <div
-              id={`dropdown-content-index??`}
-              className="dropdown-content??"
-            >
+            <div id={`dropdown-content-index??`} className="dropdown-content??">
               <div id="newPlaylistButton">
                 <p>rename playlist</p>
                 <input
@@ -72,13 +77,17 @@ const Playlists = ({ library, setLibrary }) => {
                 />
                 <button
                   id="newPlaylistNameInputButton"
-                  onClick={() => handleRenamePlaylist(playlistIndex, playlistName)}
+                  onClick={() =>
+                    handleRenamePlaylist(playlistIndex, playlistName)
+                  }
                 >
                   rename
                 </button>
               </div>
               <div id="newPlaylistButton">
-                <button onClick={() => handleDeletePlaylist(playlistIndex)}>delete playlist</button>
+                <button onClick={() => handleDeletePlaylist(playlistIndex)}>
+                  delete playlist
+                </button>
               </div>
             </div>
           </div>
@@ -97,7 +106,7 @@ const Playlists = ({ library, setLibrary }) => {
         />
         <button
           id="playlists-page-newPlaylistNameInputButton"
-          onClick={handleAddToNewPlaylist}
+          onClick={handleAddNewPlaylist}
         >
           create
         </button>

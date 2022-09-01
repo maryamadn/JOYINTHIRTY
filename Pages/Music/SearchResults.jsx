@@ -1,6 +1,24 @@
 import { useState } from "react";
+import { BsPlayFill } from "react-icons/bs";
 
-const SearchResults = ({ results, library, setLibrary }) => {
+const SearchResults = ({
+  results,
+  library,
+  setLibrary,
+  nowPlaying,
+  setNowPlaying,
+  isPlaying,
+  setIsPlaying,
+}) => {
+  const handleSetNowPlaying = (index) => {
+    const newNowPlaying = {};
+    newNowPlaying.array = [...results];
+    newNowPlaying.index = index;
+    const prevValue = isPlaying;
+    setIsPlaying(!prevValue);
+    setNowPlaying(newNowPlaying);
+  };
+
   const [values, setValues] = useState({});
 
   const handleDropdown = (index) => {
@@ -17,32 +35,50 @@ const SearchResults = ({ results, library, setLibrary }) => {
   };
 
   const handleAddToNewPlaylist = (result, index) => {
-    console.log("lib", library);
-    const newPlaylistArray = [result];
-    const newPlaylist = {};
-    newPlaylist[values[index]] = newPlaylistArray;
-    values[index] = ""; //reset input field
+    if (values[index] === "" || values[index] === undefined) {
+      console.log("alert tkle");
+    } else {
+      const newPlaylistArray = [result];
+      const newPlaylist = {};
+      newPlaylist[values[index]] = newPlaylistArray;
+      values[index] = ""; //reset input field
 
-    setLibrary([...library, newPlaylist]);
-    document
-      .getElementById(`dropdown-content-${index}`)
-      .classList.toggle("dropdown-content");
-    alert("added to new playlist");
+      setLibrary([...library, newPlaylist]);
+      document
+        .getElementById(`dropdown-content-${index}`)
+        .classList.toggle("dropdown-content");
+      alert("added to new playlist");
+    }
   };
 
-  const handleAddToExistingPlaylist = (result, index, playlistName, playlist) => {
-    const withAddedTrack = playlist[playlistName]
-    console.log(playlist)
-    withAddedTrack.push(result)
-    console.log(playlist)
-    console.log(withAddedTrack)
-    const updatedLibrary = library
-    updatedLibrary[index][playlistName] = withAddedTrack
-    setLibrary(updatedLibrary)
-    // alert('added to playlist')
-    document
-    .getElementById(`dropdown-content-${index}`)
-    .classList.toggle("dropdown-content");
+  const handleAddToExistingPlaylist = (
+    result,
+    index,
+    playlistName,
+    playlist
+  ) => {
+    if (playlist[playlistName].indexOf(result) === -1) {
+      const withAddedTrack = [...playlist[playlistName]];
+      withAddedTrack.push(result);
+
+      const newNowPlaying = nowPlaying;
+      if (parseInt(newNowPlaying.playlistIndex) === index) {
+        newNowPlaying.array = withAddedTrack;
+        console.log(newNowPlaying);
+        setNowPlaying(newNowPlaying);
+      }
+
+      const updatedLibrary = library;
+      updatedLibrary[index][playlistName] = withAddedTrack;
+      setLibrary(updatedLibrary);
+      // alert('added to playlist')
+      document
+        .getElementById(`dropdown-content-${index}`)
+        .classList.toggle("dropdown-content");
+    } else {
+      console.log("track alr in playlist");
+      //alert
+    }
   };
 
   return (
@@ -52,11 +88,11 @@ const SearchResults = ({ results, library, setLibrary }) => {
       <p>Duration</p>
       {results.map((result, index) => (
         <div key={index}>
+          <BsPlayFill onClick={() => handleSetNowPlaying(index)} />
           <img src={result.image} width="100px" />
           <p>{result.title}</p>
           <p>{result.artist}</p>
           <p>{result.duration}</p>
-          {/* <audio src={result.url} controls /> */}
 
           <div id="dropdown-container">
             <button onClick={() => handleDropdown(index)} id="dropdown-button">
@@ -82,7 +118,21 @@ const SearchResults = ({ results, library, setLibrary }) => {
               <div id="newPlaylistButton">
                 {library.map((playlist, index) => {
                   const playlistName = Object.keys(playlist)[0];
-                  return <button key={index} onClick={() => handleAddToExistingPlaylist(result, index, playlistName, playlist)}>{playlistName}</button>;
+                  return (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        handleAddToExistingPlaylist(
+                          result,
+                          index,
+                          playlistName,
+                          playlist
+                        )
+                      }
+                    >
+                      {playlistName}
+                    </button>
+                  );
                 })}
               </div>
             </div>

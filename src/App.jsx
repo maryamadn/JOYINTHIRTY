@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ForgotPw from "../Pages/Account/ForgotPw";
 import SignIn from "../Pages/Account/SignIn";
@@ -20,13 +20,23 @@ function App() {
 
   const [library, setLibrary] = useState([]);
 
-  const [nowPlaying, setNowPlaying] = useState([]);
+  const [nowPlaying, setNowPlaying] = useState({});
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const [results, setResults] = useState([]);
 
   // localStorage.clear();
   // console.log(localStorage);
-  // console.log(userDetails);
+  console.log(userDetails);
+
+  useEffect(() => {
+    if (Object.keys(userDetails).length !== 0) {
+      const updatedUserDetails = {...userDetails}
+      updatedUserDetails.library = library
+      localStorage.setItem(updatedUserDetails.username, JSON.stringify(updatedUserDetails))
+      console.log(localStorage)
+    }
+    }, [library])
 
   return (
     <>
@@ -51,7 +61,14 @@ function App() {
           <Route
             path="/user"
             element={
-              <Layout userDetails={userDetails} nowPlaying={nowPlaying} />
+              <Layout
+                userDetails={userDetails}
+                library={library}
+                nowPlaying={nowPlaying}
+                setNowPlaying={setNowPlaying}
+                isPlaying={isPlaying}
+                setIsPlaying={setIsPlaying}
+              />
             }
           >
             <Route index element={<Home userDetails={userDetails} />} />
@@ -61,7 +78,16 @@ function App() {
             />
             <Route
               path={"/user/eachplaylist/:playlistIndex"}
-              element={<EachPlaylist library={library} setLibrary={setLibrary}/>}
+              element={
+                <EachPlaylist
+                  library={library}
+                  setLibrary={setLibrary}
+                  nowPlaying={nowPlaying}
+                  setNowPlaying={setNowPlaying}
+                  setIsPlaying={setIsPlaying}
+                  isPlaying={isPlaying}
+                />
+              }
             />
             <Route
               path="/user/search"
@@ -75,6 +101,10 @@ function App() {
                     results={results}
                     library={library}
                     setLibrary={setLibrary}
+                    nowPlaying={nowPlaying}
+                    setNowPlaying={setNowPlaying}
+                    setIsPlaying={setIsPlaying}
+                    isPlaying={isPlaying}
                   />
                 }
               />
