@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignIn = ({ setUserDetails }) => {
+const SignIn = ({ setUserDetails, setLibrary }) => {
   const navigate = useNavigate();
   const usernameRef = useRef();
   const passwordRef = useRef();
@@ -16,6 +16,7 @@ const SignIn = ({ setUserDetails }) => {
         alert("Incorrect password!");
       } else {
         setUserDetails(JSON.parse(localStorage.getItem(username)));
+        setLibrary(JSON.parse(localStorage.getItem(username)).library)
         document.querySelector("body").classList.toggle("hideOverflow");
         navigate("/user");
       }
@@ -32,11 +33,13 @@ const SignIn = ({ setUserDetails }) => {
 
   return (
     <>
-      <input ref={usernameRef} placeholder="USERNAME" />
-      <input ref={passwordRef} placeholder="PASSWORD" />
-      <button onClick={handleSignIn}>SIGN IN</button>
-      <button onClick={handleForgotPw}>FORGOT PASSWORD</button>
-      <button onClick={handleSignUp}>SIGN UP</button>
+    <div className="signInPage">
+      <input className="usernameInput" ref={usernameRef} placeholder="USERNAME" />
+      <input className="passwordInput" ref={passwordRef} placeholder="PASSWORD" />
+      <button className="signIn" onClick={handleSignIn}>SIGN IN</button>
+      <button className="forgotPassword" onClick={handleForgotPw}>FORGOT PASSWORD</button>
+      <button className="signUp" onClick={handleSignUp}>SIGN UP</button>
+    </div>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = ({ setUserDetails }) => {
+const SignUp = ({ setUserDetails, setLibrary }) => {
   const navigate = useNavigate();
   const usernameRef = useRef();
   const passwordRef = useRef();
@@ -22,6 +22,7 @@ const SignUp = ({ setUserDetails }) => {
         JSON.stringify(newUserDetails)
       ); //what other info we wanna keep?
       setUserDetails(newUserDetails);
+      setLibrary([])
       document.querySelector("body").classList.toggle("hideOverflow");
       navigate("/user");
     } else {
@@ -39,16 +40,16 @@ const SignUp = ({ setUserDetails }) => {
 
   return (
     <>
-      <form>
-        <input ref={usernameRef} placeholder="USERNAME" />
-        <input ref={passwordRef} placeholder="PASSWORD" />
-        <button type="button" onClick={handleSignUp}>
+      <form className="signUpPage">
+        <input className="usernameInput" ref={usernameRef} placeholder="USERNAME" />
+        <input className="passwordInput" ref={passwordRef} placeholder="PASSWORD" />
+        <button className="signIn" type="button" onClick={handleSignUp}>
           SIGN UP
         </button>
-        <button type="button" onClick={handleForgotPw}>
+        <button className="forgotPassword" type="button" onClick={handleForgotPw}>
           FORGOT PASSWORD
         </button>
-        <button type="button" onClick={handleSignIn}>
+        <button className="signUp" type="button" onClick={handleSignIn}>
           SIGN IN
         </button>
       </form>

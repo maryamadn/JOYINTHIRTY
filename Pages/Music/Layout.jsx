@@ -7,8 +7,10 @@ import {
   BsFillSkipEndFill,
   BsFillVolumeUpFill,
   BsFillVolumeMuteFill,
+  BsThreeDots,
 } from "react-icons/bs";
 import { TbRepeatOnce, TbArrowsShuffle } from "react-icons/tb";
+import { IconContext } from "react-icons";
 
 const Layout = ({
   userDetails,
@@ -18,9 +20,15 @@ const Layout = ({
   isPlaying,
   setIsPlaying,
 }) => {
-  const handleRemoveWelcomeDiv = () => {
-    document.getElementById("welcomeDiv").classList.add("hideWelcomeDiv");
+  const handleHideWelcome = () => {
+    document.getElementById("welcome").classList.add("hideWelcome");
     document.querySelector("body").classList.remove("hideOverflow");
+  };
+
+  const handleHeaderDropdown = () => {
+    document
+      .getElementById("headerDropdownContent")
+      .classList.toggle("headerDropdownContent");
   };
 
   const handleScrollToTop = () => {
@@ -89,9 +97,11 @@ const Layout = ({
   };
 
   const whilePlaying = () => {
-    progressBar.current.value = audioPlayer.current.currentTime; //updates the progressBar to match audio's current time
-    changePlayerCurrentTime(); //updates style of progressBar
-    animationRef.current = requestAnimationFrame(whilePlaying); //constantly updates animation
+    if (progressBar.current) {
+      progressBar.current.value = audioPlayer?.current?.currentTime; //updates the progressBar to match audio's current time
+      changePlayerCurrentTime(); //updates style of progressBar
+      animationRef.current = requestAnimationFrame(whilePlaying); //constantly updates animation
+    }
   };
 
   const changeRange = () => {
@@ -194,7 +204,7 @@ const Layout = ({
 
   const changeRangeVolume = () => {
     //updates the audio's current volume to following volumeBar when users seek own volume
-    audioPlayer.current.volume = volumeBar.current.value/100;
+    audioPlayer.current.volume = volumeBar.current.value / 100;
     changePlayerCurrentVolume(); //updates style of progressBar
   };
 
@@ -213,10 +223,10 @@ const Layout = ({
     if (!prevValue) {
       volDetails.prevVolume = audioPlayer.current.volume;
       audioPlayer.current.volume = 0;
-      volumeBar.current.value = 0
+      volumeBar.current.value = 0;
     } else {
       audioPlayer.current.volume = volDetails.prevVolume;
-      volumeBar.current.value = volDetails.prevVolume*100;
+      volumeBar.current.value = volDetails.prevVolume * 100;
     }
     volDetails.muted = !prevValue;
     setIsMuted(volDetails); //updates state
@@ -224,119 +234,151 @@ const Layout = ({
 
   return (
     <>
-      <div id="welcomeDiv">
-        <h1>WELCOME, {userDetails.username}!</h1>
-        <button onClick={handleRemoveWelcomeDiv}>remove landing image</button>
+      <div id="welcome">
+        <h1>
+          WELCOME
+          <br />
+          {userDetails.username}!
+        </h1>
+        <button onClick={handleHideWelcome}>remove landing image</button>
       </div>
 
       <div id="header">
-        <Link to="/user">
-          <div>HOME</div>
+        <Link to="/user" className="headerLinks">
+          HOME
         </Link>
-        <Link to="/user/playlists">
-          <div>PLAYLISTS</div>
+        <Link to="/user/playlists" className="headerLinks">
+          PLAYLISTS
         </Link>
-        <Link to="/user/search">
-          <div>SEARCH</div>
+        <Link to="/user/search" className="headerLinks">
+          SEARCH
         </Link>
-        <Link to="/user/stats">
-          <div>STATS</div>
+        <Link to="/user/stats" className="headerLinks">
+          STATS
         </Link>
 
-        <div id="dropdown">
-          <p>img: user icon</p>
-          <div>
-            <Link to="/user/account">Account Info</Link>
-            <Link to="/" onClick={() => (setNowPlaying([]))}>Logout</Link>
+        <div className="headerDropdown">
+          <IconContext.Provider value={{ size: "4vw", className: "menu" }}>
+            <BsThreeDots onClick={handleHeaderDropdown} />
+          </IconContext.Provider>
+          <div id="headerDropdownContent" className="headerDropdownContent">
+            <Link to="/user/account" className="menuOptions menuOption1">
+              Account
+            </Link>
+            <br />
+            <Link
+              to="/"
+              className="menuOptions menuOption2"
+              onClick={() => setNowPlaying([])}
+            >
+              Logout
+            </Link>
           </div>
         </div>
       </div>
 
       <Outlet />
 
-      <div id="footer">
-        {/* <img src="" alt="logo" />
-        <h1>BRAND NAME</h1> */}
-
-        <div id="nowPlaying">
-          <audio
-            ref={audioPlayer}
-            src={nowPlaying?.array?.[nowPlaying.index]?.url}
-            volume={0.5}
-            autoPlay
-            loop={nowPlaying?.array?.length === 1}
-          />
-          <p>
+      <div id="nowPlaying">
+        <audio
+          ref={audioPlayer}
+          src={nowPlaying?.array?.[nowPlaying.index]?.url}
+          volume={0.5}
+          autoPlay
+          loop={nowPlaying?.array?.length === 1}
+        />
+        <div className="nowPlayingCol1">
+            {
+              <img
+                className="trackImage"
+                src={
+                  nowPlaying?.array?.[nowPlaying.index]?.image ||
+                  "default grey pic"
+                }
+                width="50px"
+              />
+            }
+          <p className="trackArtist">
+            {nowPlaying?.array?.[nowPlaying.index]?.artist}
+          </p>
+          <p className="trackName">
             {nowPlaying?.array?.[nowPlaying.index]?.title ||
               "No Track Selected"}
           </p>
-          <p>{nowPlaying?.array?.[nowPlaying.index]?.artist}</p>
-          {
-            <img
-              src={
-                nowPlaying?.array?.[nowPlaying.index]?.image ||
-                "default grey pic"
-              }
-              width="50px"
-            />
-          }
+        </div>
+        
 
-          <TbArrowsShuffle onClick={handleShuffle} />
+        <div className="nowPlayingCol2">
+              <div className="controls">
+                <IconContext.Provider value={{ size: "5vw", className: "menu" }}>
 
-          {/* 1) if currentime is more than 3 seconds, change currenttime to 0 (play song from start)
+
+        <TbArrowsShuffle onClick={handleShuffle} className="shuffle" />
+
+        {/* 1) if currentime is more than 3 seconds, change currenttime to 0 (play song from start)
           2) else, if its first song in playlist, go to prev url. if first song, go to last song*/}
-          <BsFillSkipStartFill onClick={handleSkipStart} />
+        <BsFillSkipStartFill onClick={handleSkipStart} className="skipStart" />
 
-          {isPlaying ? (
-            <BsPauseFill onClick={togglePlayPause} />
+        {isPlaying ? (
+          <BsPauseFill onClick={togglePlayPause} className="pause" />
           ) : (
-            <BsPlayFill onClick={togglePlayPause} />
-          )}
+            <BsPlayFill onClick={togglePlayPause} className="play" />
+            )}
 
-          {/* onclick: //currentime=max/duration// >>>> 1) if not last song in playlist, go to next url. if last song, go to first song*/}
-          <BsFillSkipEndFill onClick={handleSkipEnd} />
+        {/* onclick: //currentime=max/duration// >>>> 1) if not last song in playlist, go to next url. if last song, go to first song*/}
+        <BsFillSkipEndFill onClick={handleSkipEnd} className="skipEnd" />
 
-          {/* onclick 1) toggle such that repeats/does not repeat current track. default repeat for playlists (even with one song inside)*/}
-          <TbRepeatOnce onClick={handleRepeatCurrentTrack} />
+        {/* onclick 1) toggle such that repeats/does not repeat current track. default repeat for playlists (even with one song inside)*/}
+        <TbRepeatOnce onClick={handleRepeatCurrentTrack} className="repeat" />
+            </IconContext.Provider>
+        </div>
 
-          {/* current time */}
-          <p>{calculateTime(currentTime) || "00:00"}</p>
+        {/* current time */}
+        <p className="time1">{calculateTime(currentTime) || "00:00"}</p>
 
-          {/* progress bar */}
-          <div>
-            <input
-              type="range"
-              defaultValue="0"
-              ref={progressBar}
-              onChange={changeRange}
-            />
-          </div>
-
-          {/* total duration */}
-          <p>
-            {(duration && !isNaN(duration) && calculateTime(duration)) ||
-              "00:00"}
-          </p>
-
-          {/* onclick: 1) mute - audioPlayer.volume = 0 (0-1) 2) create progressbar, same concept*/}
-          {isMuted.muted ? (
-            <BsFillVolumeMuteFill onClick={handleMute} />
-          ) : (
-            <BsFillVolumeUpFill onClick={handleMute} />
-          )}
-          <input
-            type="range"
-            defaultValue="100"
-            ref={volumeBar}
-            onChange={changeRangeVolume}
+        {/* progress bar */}
+        <input
+          className="progressBar"
+          type="range"
+          defaultValue="0"
+          ref={progressBar}
+          onChange={changeRange}
           />
 
-          {/* maximise/minimise */}
-          <button onClick={handleNowPlayingSize}>
-            {isMaximised ? "minimise" : "maximise"}
-          </button>
+        {/* total duration */}
+        <p className="time2">
+          {(duration && !isNaN(duration) && calculateTime(duration)) || "00:00"}
+        </p>
+        </div>
 
-          {isMaximised ? '' : <button onClick={handleScrollToTop}>scroll to top</button>}
+            <div className="nowPlayingCol3">
+
+        {isMaximised ? (
+          ""
+          ) : (
+            <button onClick={handleScrollToTop} className="scroll">
+            scroll to top
+          </button>
+        )}
+        {/* onclick: 1) mute - audioPlayer.volume = 0 (0-1) 2) create progressbar, same concept*/}
+        {isMuted.muted ? (
+          <BsFillVolumeMuteFill onClick={handleMute} className="mute" />
+          ) : (
+            <BsFillVolumeUpFill onClick={handleMute} className="volume" />
+            )}
+        <input
+          className="volumeBar"
+          type="range"
+          defaultValue="100"
+          ref={volumeBar}
+          onChange={changeRangeVolume}
+          />
+
+        {/* maximise/minimise */}
+        <button onClick={handleNowPlayingSize} className="minMax">
+          {isMaximised ? "minimise" : "maximise"}
+        </button>
+
         </div>
       </div>
     </>

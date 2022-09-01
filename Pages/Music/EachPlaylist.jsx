@@ -13,7 +13,7 @@ const EachPlaylist = ({
   const navigate = useNavigate();
   const { playlistIndex } = useParams();
 
-  const playlistName = Object.keys(library[playlistIndex])[0];
+  const playlistName = Object.keys(library?.[playlistIndex])[0];
   const [playlist, setPlaylist] = useState(
     Object.values(library[playlistIndex])[0]
   );

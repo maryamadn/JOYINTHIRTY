@@ -26,15 +26,15 @@ function App() {
   const [results, setResults] = useState([]);
 
   // localStorage.clear();
-  // console.log(localStorage);
+  console.log(localStorage);
   console.log(userDetails);
+  console.log(library)
 
   useEffect(() => {
     if (Object.keys(userDetails).length !== 0) {
       const updatedUserDetails = {...userDetails}
       updatedUserDetails.library = library
       localStorage.setItem(updatedUserDetails.username, JSON.stringify(updatedUserDetails))
-      console.log(localStorage)
     }
     }, [library])
 
@@ -47,14 +47,14 @@ function App() {
               index
               element={
                 <SignIn
-                  userDetails={userDetails}
                   setUserDetails={setUserDetails}
+                  setLibrary={setLibrary}
                 />
               }
             />
             <Route
               path="/signup"
-              element={<SignUp setUserDetails={setUserDetails} />}
+              element={<SignUp setUserDetails={setUserDetails} setLibrary={setLibrary} />}
             />
             <Route path="/forgotpw" element={<ForgotPw />} />
           </Route>

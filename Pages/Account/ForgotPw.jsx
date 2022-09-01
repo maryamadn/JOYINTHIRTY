@@ -10,8 +10,10 @@ const ForgotPw = () => {
 
     return (
         <>
-        <h1>....cant do anything yet</h1>
-        <button onClick={handleSignIn}>SIGN IN</button>
+        <div className='forgotPasswordPage'>
+        <p>...nothing to see here</p>
+        <button className='signIn' onClick={handleSignIn}>SIGN IN</button>
+        </div>
         </>
     )
 }
