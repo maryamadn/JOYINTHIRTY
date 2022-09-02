@@ -99,3 +99,6 @@ if next/prev song is same/duplicate will need to skip twice....
 
 3) https://bobbyhadz.com/blog/react-clear-input-after-submit 
 4) shuffle: https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj 
+
+##
+- react cool img plugin

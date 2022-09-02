@@ -57,8 +57,10 @@ const Search = ({ setResults }) => {
 
   return (
     <>
-      <input ref={queryRef} placeholder="search tracks or artists" />
-      <button onClick={handleSearch}>search</button>
+    <div className="searchPage">
+      <input className="searchInput" ref={queryRef} placeholder="search tracks or artists" />
+      <button className="searchButton" onClick={handleSearch}>search</button>
+    </div>
       <Outlet />
     </>
   );

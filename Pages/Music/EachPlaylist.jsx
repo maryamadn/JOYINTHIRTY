@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { BsPlayFill } from "react-icons/bs";
+import { BsPlayFill, BsThreeDots } from "react-icons/bs";
+import { IconContext } from "react-icons";
 
 const EachPlaylist = ({
   library,
@@ -141,6 +142,12 @@ const EachPlaylist = ({
     // alert("removed from playlist");
   };
 
+  const handleResultMenu = (index) => {
+    document
+      .getElementById(`resultMenuContent-${index}`)
+      .classList.toggle("resultMenuContent-hidden");
+  };
+
   return (
     <>
       <h1>{playlistName}</h1>
@@ -169,25 +176,30 @@ const EachPlaylist = ({
         </div>
       </div>
       {playlist.length} {playlist.length === 1 ? "track" : "tracks"}
-      <h2>## hrs, ## mins</h2>
-      <p>Track Name</p>
-      <p>Artist</p>
-      <p>Duration</p>
+      <p>## hrs, ## mins</p>
+      <div className='eachPlaylistPage-legend'>
+      <p className="eachPlaylistPage-trackName">Track Name</p>
+      <p className="eachPlaylistPage-trackArtist">Artist</p>
+      <p className="eachPlaylistPage-trackDuration">Duration</p>
+      </div>
       {playlist.map((track, index) => (
-        <div key={`eachplaylist-${index}`} className='eachPlaylistTrack'>
+        <div key={`eachplaylist-${index}`} className='playlist'>
+          <IconContext.Provider value={{ size: "30px", className: "resultPlayIcon" }}>
           <BsPlayFill onClick={() => handleSetNowPlaying(index)} />
-          <img src={track.image} width="100px" />
+          </IconContext.Provider>
+          <img src={track.image}/>
           <p>{track.title}</p>
           <p>{track.artist}</p>
           <p>{track.duration}</p>
 
-          <div id="dropdown-container">
-            <button onClick={() => handleDropdown(index)} id="dropdown-button">
-              options
-            </button>
-            <div id={`dropdown-content-${index}`} className="dropdown-content">
-              <div id="newPlaylistButton">
-                <p>add to new playlist</p>
+          <div id="resultMenuContainer">
+          <BsThreeDots
+              className="resultMenuIcon"
+              onClick={() => handleResultMenu(index)}
+            />
+            <div id={`resultMenuContent-${index}`}>
+              {/* <div id="newPlaylistButton"> */}
+              <section >new playlist</section>
                 <input
                   id="newPlaylistNameInput"
                   value={values[index] || ""}
@@ -195,18 +207,18 @@ const EachPlaylist = ({
                   onChange={handleInputChange}
                   placeholder="Playlist Name"
                 />
-                <button
+                <section
                   id="newPlaylistNameInputButton"
                   onClick={() => handleAddToNewPlaylist(track, index)}
                 >
                   create
-                </button>
-              </div>
-              <div id="newPlaylistButton">
+                </section>
+              {/* </div> */}
+              <section id="newPlaylistButton">
                 {library.map((playlist, index) => {
                   const playlistName = Object.keys(playlist)[0];
                   return (
-                    <button
+                    <section
                       key={index}
                       onClick={() =>
                         handleAddToExistingPlaylist(
@@ -218,10 +230,10 @@ const EachPlaylist = ({
                       }
                     >
                       {playlistName}
-                    </button>
+                    </section>
                   );
                 })}
-              </div>
+              </section>
               <div id="newPlaylistButton">
                 <button onClick={() => handleRemoveFromPlaylist(index)}>
                   remove from playlist

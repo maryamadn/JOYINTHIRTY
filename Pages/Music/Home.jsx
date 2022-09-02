@@ -1,24 +1,13 @@
 import { Link } from "react-router-dom";
 
-const Home = ({ userDetails }) => {
-  // console.log(userDetails);
-  // console.log(localStorage);
-
+const Home = () => {
   return (
     <>
-      <div id="home">
-        <Link to="/user/search">
-          <div>SEARCH</div>
-        </Link>
-        <Link to="/user/stats">
-          <div>STATS</div>
-        </Link>
-        <Link to="/user/playlists">
-          <div>PLAYLISTS</div>
-        </Link>
-        <Link to="/user/search">
-          <div>TOP TRACKS</div>
-        </Link>
+      <div className="home">
+        <Link to="/user/search" className="homeSearch">SEARCH</Link>
+        <Link to="/user/stats" className="homeStats">STATS</Link>
+        <Link to="/user/playlists" className="homePlaylists">PLAYLISTS</Link>
+        <Link to="/user/search" className="homeTopTracks">TOP TRACKS</Link>
       </div>
     </>
   );

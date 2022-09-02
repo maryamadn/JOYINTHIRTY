@@ -11,7 +11,7 @@ const Start = () => {
         <>
         <div className='startPage'>
 
-        <IconContext.Provider value={{ size: "20vw", className: "logo" }}>
+        <IconContext.Provider value={{ size: "80px", className: "logo" }}>
         <MdOutlineLibraryMusic />
         </IconContext.Provider>
         <h1 className='brand'>music.</h1>

@@ -71,7 +71,7 @@ function App() {
               />
             }
           >
-            <Route index element={<Home userDetails={userDetails} />} />
+            <Route index element={<Home />} />
             <Route
               path="/user/playlists"
               element={<Playlists library={library} setLibrary={setLibrary} />}

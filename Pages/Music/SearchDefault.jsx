@@ -5,10 +5,10 @@ const SearchDefault = () => {
     return (
         <>
         <h1>TOP TRACKS</h1>
-        <Link to='user/search'>...</Link>
+        <Link to='user/search'></Link>
 
         <h1>TOP BY GENRE</h1>
-        <Link to='user/search'>???</Link>
+        <Link to='user/search'></Link>
         </>
     )
 }

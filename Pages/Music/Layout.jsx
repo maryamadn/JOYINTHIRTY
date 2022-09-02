@@ -9,7 +9,7 @@ import {
   BsFillVolumeMuteFill,
   BsThreeDots
 } from "react-icons/bs";
-import {AiOutlinePlusSquare, AiOutlineMinusSquare,} from 'react-icons/ai'
+import {AiOutlinePlusSquare, AiOutlineMinusSquare, AiOutlineUpSquare} from 'react-icons/ai'
 import { TbRepeatOnce, TbArrowsShuffle } from "react-icons/tb";
 import { IconContext } from "react-icons";
 
@@ -21,9 +21,6 @@ const Layout = ({
   isPlaying,
   setIsPlaying,
 }) => {
-
-  window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
-
   const handleHideWelcome = () => {
     document.getElementById("welcome").classList.add("hideWelcome");
     document.querySelector("body").classList.remove("hideOverflow");
@@ -244,7 +241,7 @@ const Layout = ({
           <br />
           {userDetails.username}!
         </h1>
-        <button onClick={handleHideWelcome}>remove landing image</button>
+        <button onClick={handleHideWelcome}>letsgoo</button>
       </div>
 
       <div id="header">
@@ -363,9 +360,9 @@ const Layout = ({
           {isMaximised ? (
             ""
           ) : (
-            <button onClick={handleScrollToTop} className="scroll">
-              scroll to top
-            </button>
+            <IconContext.Provider value={{ size: "30px", className: "scroll" }}>
+            <AiOutlineUpSquare onClick={handleScrollToTop}/>
+            </IconContext.Provider>
           )}
             <IconContext.Provider value={{ size: "30px", className: "volume" }}>
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { BsPlayFill } from "react-icons/bs";
-import { IconContext } from 'react-icons'
+import { BsPlayFill, BsThreeDots } from "react-icons/bs";
+import { IconContext } from "react-icons";
 
 const SearchResults = ({
   results,
@@ -22,10 +22,10 @@ const SearchResults = ({
 
   const [values, setValues] = useState({});
 
-  const handleDropdown = (index) => {
+  const handleResultMenu = (index) => {
     document
-      .getElementById(`dropdown-content-${index}`)
-      .classList.toggle("dropdown-content");
+      .getElementById(`resultMenuContent-${index}`)
+      .classList.toggle("resultMenuContent-hidden");
   };
 
   const handleInputChange = (e) => {
@@ -84,64 +84,67 @@ const SearchResults = ({
 
   return (
     <>
-    <div className="searchResultsHeading">
-      
-      <p>Track Name</p>
-      <p>Artist</p>
-      <p>Duration</p>
-    </div>
+      <div className="searchResultsPage-legend">
+        <p className="searchResultsPage-trackName">Track Name</p>
+        <p className="searchResultsPage-trackArtist">Artist</p>
+        <p className="searchResultsPage-trackDuration">Duration</p>
+      </div>
       {results.map((result, index) => (
-        <div key={index} className='result'>
-          <IconContext.Provider value={{ size: "30px", className: "resultPlayIcon" }}>
-
-          <BsPlayFill onClick={() => handleSetNowPlaying(index)} />
+        <div key={index} className="result">
+          <IconContext.Provider
+            value={{ size: "30px", className: "resultPlayIcon" }}
+          >
+            <BsPlayFill onClick={() => handleSetNowPlaying(index)} />
           </IconContext.Provider>
           <img src={result.image} />
           <p>{result.title}</p>
           <p>{result.artist}</p>
           <p>{result.duration}</p>
 
-          <div id="dropdown-container">
-            <button onClick={() => handleDropdown(index)} id="dropdown-button">
-              +
-            </button>
-            <div id={`dropdown-content-${index}`} className="dropdown-content">
-              <div id="newPlaylistButton">
-                <p>new playlist</p>
-                <input
-                  id="newPlaylistNameInput"
-                  value={values[index] || ""}
-                  name={index}
-                  onChange={handleInputChange}
-                  placeholder="Playlist Name"
-                />
-                <button
-                  id="newPlaylistNameInputButton"
-                  onClick={() => handleAddToNewPlaylist(result, index)}
-                >
-                  create
-                </button>
-              </div>
-              <div id="newPlaylistButton">
-                {library.map((playlist, index) => {
-                  const playlistName = Object.keys(playlist)[0];
-                  return (
-                    <button
-                      key={index}
-                      onClick={() =>
-                        handleAddToExistingPlaylist(
-                          result,
-                          index,
-                          playlistName,
-                          playlist
-                        )
-                      }
-                    >
-                      {playlistName}
-                    </button>
-                  );
-                })}
-              </div>
+          <div id="resultMenuContainer">
+            <BsThreeDots
+              className="resultMenuIcon"
+              onClick={() => handleResultMenu(index)}
+            />
+            <div id={`resultMenuContent-${index}`} >
+              {/* <div id="newPlaylistButton"> */}
+                <section >new playlist</section>
+                <section>
+                  <input
+                    id="newPlaylistNameInput"
+                    value={values[index] || ""}
+                    name={index}
+                    onChange={handleInputChange}
+                    placeholder="Playlist Name"
+                  />
+                  <button
+                    id="newPlaylistNameInputButton"
+                    onClick={() => handleAddToNewPlaylist(result, index)}
+                  >
+                    create
+                  </button>
+                </section>
+                <section id="newPlaylistButton">
+                  {library.map((playlist, index) => {
+                    const playlistName = Object.keys(playlist)[0];
+                    return (
+                      <section
+                        key={index}
+                        onClick={() =>
+                          handleAddToExistingPlaylist(
+                            result,
+                            index,
+                            playlistName,
+                            playlist
+                          )
+                        }
+                      >
+                        {playlistName}
+                      </section>
+                    );
+                  })}
+                </section>
+              {/* </div> */}
             </div>
           </div>
         </div>
