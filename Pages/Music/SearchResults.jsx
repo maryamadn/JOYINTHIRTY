@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BsPlayFill } from "react-icons/bs";
+import { IconContext } from 'react-icons'
 
 const SearchResults = ({
   results,
@@ -83,13 +84,19 @@ const SearchResults = ({
 
   return (
     <>
+    <div className="searchResultsHeading">
+      
       <p>Track Name</p>
       <p>Artist</p>
       <p>Duration</p>
+    </div>
       {results.map((result, index) => (
-        <div key={index}>
+        <div key={index} className='result'>
+          <IconContext.Provider value={{ size: "30px", className: "resultPlayIcon" }}>
+
           <BsPlayFill onClick={() => handleSetNowPlaying(index)} />
-          <img src={result.image} width="100px" />
+          </IconContext.Provider>
+          <img src={result.image} />
           <p>{result.title}</p>
           <p>{result.artist}</p>
           <p>{result.duration}</p>
@@ -140,8 +147,8 @@ const SearchResults = ({
         </div>
       ))}
 
-      <button>.. prev page</button>
-      <button>next page ..</button>
+      <button className="prevPage">prev page</button>
+      <button className="nextPage">next page</button>
     </>
   );
 };

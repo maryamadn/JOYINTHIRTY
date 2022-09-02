@@ -7,8 +7,9 @@ import {
   BsFillSkipEndFill,
   BsFillVolumeUpFill,
   BsFillVolumeMuteFill,
-  BsThreeDots,
+  BsThreeDots
 } from "react-icons/bs";
+import {AiOutlinePlusSquare, AiOutlineMinusSquare,} from 'react-icons/ai'
 import { TbRepeatOnce, TbArrowsShuffle } from "react-icons/tb";
 import { IconContext } from "react-icons";
 
@@ -20,6 +21,9 @@ const Layout = ({
   isPlaying,
   setIsPlaying,
 }) => {
+
+  window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
+
   const handleHideWelcome = () => {
     document.getElementById("welcome").classList.add("hideWelcome");
     document.querySelector("body").classList.remove("hideOverflow");
@@ -288,16 +292,16 @@ const Layout = ({
           loop={nowPlaying?.array?.length === 1}
         />
         <div className="nowPlayingCol1">
-            {
-              <img
-                className="trackImage"
-                src={
-                  nowPlaying?.array?.[nowPlaying.index]?.image ||
-                  "default grey pic"
-                }
-                width="50px"
-              />
-            }
+          {
+            <img
+              className="trackImage"
+              src={
+                nowPlaying?.array?.[nowPlaying.index]?.image ||
+                "default grey pic"
+              }
+              width="50px"
+            />
+          }
           <p className="trackArtist">
             {nowPlaying?.array?.[nowPlaying.index]?.artist}
           </p>
@@ -306,79 +310,84 @@ const Layout = ({
               "No Track Selected"}
           </p>
         </div>
-        
 
         <div className="nowPlayingCol2">
-              <div className="controls">
-                <IconContext.Provider value={{ size: "5vw", className: "menu" }}>
+          <div className="controls">
+            <IconContext.Provider value={{ size: "30px", className: "controls" }}>
+              <TbArrowsShuffle onClick={handleShuffle} className="shuffle" />
 
-
-        <TbArrowsShuffle onClick={handleShuffle} className="shuffle" />
-
-        {/* 1) if currentime is more than 3 seconds, change currenttime to 0 (play song from start)
+              {/* 1) if currentime is more than 3 seconds, change currenttime to 0 (play song from start)
           2) else, if its first song in playlist, go to prev url. if first song, go to last song*/}
-        <BsFillSkipStartFill onClick={handleSkipStart} className="skipStart" />
+              <BsFillSkipStartFill
+                onClick={handleSkipStart}
+                className="skipStart"
+              />
 
-        {isPlaying ? (
-          <BsPauseFill onClick={togglePlayPause} className="pause" />
-          ) : (
-            <BsPlayFill onClick={togglePlayPause} className="play" />
-            )}
+              {isPlaying ? (
+                <BsPauseFill onClick={togglePlayPause} className="pause" />
+              ) : (
+                <BsPlayFill onClick={togglePlayPause} className="play" />
+              )}
 
-        {/* onclick: //currentime=max/duration// >>>> 1) if not last song in playlist, go to next url. if last song, go to first song*/}
-        <BsFillSkipEndFill onClick={handleSkipEnd} className="skipEnd" />
+              {/* onclick: //currentime=max/duration// >>>> 1) if not last song in playlist, go to next url. if last song, go to first song*/}
+              <BsFillSkipEndFill onClick={handleSkipEnd} className="skipEnd" />
 
-        {/* onclick 1) toggle such that repeats/does not repeat current track. default repeat for playlists (even with one song inside)*/}
-        <TbRepeatOnce onClick={handleRepeatCurrentTrack} className="repeat" />
+              {/* onclick 1) toggle such that repeats/does not repeat current track. default repeat for playlists (even with one song inside)*/}
+              <TbRepeatOnce
+                onClick={handleRepeatCurrentTrack}
+                className="repeat"
+              />
             </IconContext.Provider>
-        </div>
+          </div>
 
-        {/* current time */}
-        <p className="time1">{calculateTime(currentTime) || "00:00"}</p>
+          {/* current time */}
+          <p className="time1">{calculateTime(currentTime) || "00:00"}</p>
 
-        {/* progress bar */}
-        <input
-          className="progressBar"
-          type="range"
-          defaultValue="0"
-          ref={progressBar}
-          onChange={changeRange}
+          {/* progress bar */}
+          <input
+            className="progressBar"
+            type="range"
+            defaultValue="0"
+            ref={progressBar}
+            onChange={changeRange}
           />
 
-        {/* total duration */}
-        <p className="time2">
-          {(duration && !isNaN(duration) && calculateTime(duration)) || "00:00"}
-        </p>
+          {/* total duration */}
+          <p className="time2">
+            {(duration && !isNaN(duration) && calculateTime(duration)) ||
+              "00:00"}
+          </p>
         </div>
 
-            <div className="nowPlayingCol3">
-
-        {isMaximised ? (
-          ""
+        <div className="nowPlayingCol3">
+          {isMaximised ? (
+            ""
           ) : (
             <button onClick={handleScrollToTop} className="scroll">
-            scroll to top
-          </button>
-        )}
-        {/* onclick: 1) mute - audioPlayer.volume = 0 (0-1) 2) create progressbar, same concept*/}
-        {isMuted.muted ? (
-          <BsFillVolumeMuteFill onClick={handleMute} className="mute" />
-          ) : (
-            <BsFillVolumeUpFill onClick={handleMute} className="volume" />
-            )}
-        <input
-          className="volumeBar"
-          type="range"
-          defaultValue="100"
-          ref={volumeBar}
-          onChange={changeRangeVolume}
+              scroll to top
+            </button>
+          )}
+            <IconContext.Provider value={{ size: "30px", className: "volume" }}>
+
+          {/* onclick: 1) mute - audioPlayer.volume = 0 (0-1) 2) create progressbar, same concept*/}
+          {isMuted.muted ? (
+            <BsFillVolumeMuteFill onClick={handleMute} className="mute" />
+            ) : (
+              <BsFillVolumeUpFill onClick={handleMute} className="volume" />
+              )}
+              </IconContext.Provider>
+          <input
+            className="volumeBar"
+            type="range"
+            defaultValue="100"
+            ref={volumeBar}
+            onChange={changeRangeVolume}
           />
 
-        {/* maximise/minimise */}
-        <button onClick={handleNowPlayingSize} className="minMax">
-          {isMaximised ? "minimise" : "maximise"}
-        </button>
-
+          {/* maximise/minimise */}
+          <IconContext.Provider value={{ size: "30px", className: "minMax" }}>
+            {isMaximised ? <AiOutlineMinusSquare onClick={handleNowPlayingSize}/> : <AiOutlinePlusSquare onClick={handleNowPlayingSize} />}
+          </IconContext.Provider>
         </div>
       </div>
     </>

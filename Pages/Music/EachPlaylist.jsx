@@ -174,7 +174,7 @@ const EachPlaylist = ({
       <p>Artist</p>
       <p>Duration</p>
       {playlist.map((track, index) => (
-        <div key={`eachplaylist-${index}`}>
+        <div key={`eachplaylist-${index}`} className='eachPlaylistTrack'>
           <BsPlayFill onClick={() => handleSetNowPlaying(index)} />
           <img src={track.image} width="100px" />
           <p>{track.title}</p>
