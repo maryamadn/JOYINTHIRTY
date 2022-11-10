@@ -197,9 +197,6 @@ const SearchResults = ({
           </div>
         </div>
       ))}
-
-      <button className="prevPage">prev page</button>
-      <button className="nextPage">next page</button>
     </div>
   );
 };

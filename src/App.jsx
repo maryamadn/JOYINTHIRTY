@@ -10,7 +10,6 @@ import Playlists from "../Pages/Music/Playlists";
 import EachPlaylist from "../Pages/Music/EachPlaylist";
 import Search from "../Pages/Music/Search";
 import SearchResults from "../Pages/Music/SearchResults";
-import Stats from "../Pages/Music/Stats";
 import Settings from "../Pages/Music/Settings";
 
 function App() {
@@ -104,7 +103,6 @@ function App() {
                 }
               />
             </Route>
-            <Route path="/user/stats" element={<Stats />} />
             <Route path="/user/settings" element={<Settings userDetails={userDetails} setUserDetails={setUserDetails}/>} />
           </Route>
         </Routes>

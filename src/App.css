@@ -7,6 +7,10 @@ body {
   height: 100vh;
 }
 
+.outlet {
+  padding-bottom: 150px;
+}
+
 button:hover {
   cursor: pointer;
 }
@@ -189,7 +193,7 @@ button:hover {
   background-size: cover;
   background-position: center;
   text-align: center;
-  z-index: 1;
+  z-index: 2;
 
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -241,7 +245,11 @@ button:hover {
 /* header (navbar) */
 
 #header {
-  padding: 60px 30px 0px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #5c1128;
+  padding: 40px 30px 0px 30px;
   display: grid;
   grid-template-areas:
     "brand"
@@ -266,7 +274,7 @@ button:hover {
 #collapsedHeader {
   grid-area: header;
   display: grid;
-  grid-template-areas: ". . . . .";
+  grid-template-areas: ". . . .";
   justify-items: center;
   align-items: center;
   column-gap: 40px;
@@ -329,24 +337,26 @@ button:hover {
 /* footer (now playing) */
 
 #nowPlaying {
-  position: sticky;
+  position: fixed;
+  right: 0;
+  left: 0;
   bottom: 0;
-  /* z-index: 0; */
+  height: 70px;
   background-color: #050404;
-  opacity: 0.8;
+  opacity: 0.9;
   color: white;
-  padding: 20px;
+  padding: 20px 30px;
 
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas: "1 2 3";
+  grid-template-columns: 30% 40% 30%;
   align-items: center;
 }
 
-#nowPlaying p {
-  display: inline;
-  font-size: 14px;
+#nowPlaying svg {
+  cursor: pointer;
+}
 
+#nowPlaying p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -354,136 +364,184 @@ button:hover {
 
 .maximised {
   height: 100vh !important;
-  width: 100vw !important;
+  padding: 0 !important;
+  z-index: 1;
+
+  grid-template-columns: 400px !important;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  row-gap: 50px;
 }
 
-.nowPlayingCol1 {
+#nowPlayingCol1 {
   display: grid;
+  grid-template-columns: 50px 70%;
+  grid-template-areas: "image info";
+  align-items: center;
+  column-gap: 20px;
 }
 
-/* .trackImage {
-  width: 50px;
-  height: 50px;
-} */
+.nowPlayingCol1Max {
+  grid-template-columns: 400px !important;
+  grid-template-areas: "image" !important;
 
-.trackArtist {
-  font-size: 50px;
+  position: relative;
 }
 
-.trackName {
-  font-size: 50px;
+#trackImage {
+  grid-area: image;
 }
 
-.nowPlayingCol2 {
-  justify-self: center;
+.trackImageMax {
+  height: 400px;
+  width: 400px;
+}
+
+#trackTitle {
+  font-size: 14px;
+}
+
+.trackTitleMax {
+  font-weight: bold;
+  font-size: 25px !important;
+}
+
+#trackArtist {
+  font-size: 12px;
+}
+
+.trackArtistMax {
+  font-size: 15px !important;
+}
+
+#nowPlayingCol2 {
   display: grid;
+  justify-items: center;
+  row-gap: 10px;
 }
 
-.progressBar {
-  --bar-bg: #ffc2a1;
+.nowPlayingCol2Max {
+  row-gap: 40px !important;
+}
+
+#controls {
+  display: flex;
+  column-gap: 20px;
+}
+
+#duration {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.durationMax {
+  font-size: 14px !important;
+}
+
+#progressBar {
   --seek-before-width: 0;
-  --seek-before-color: #320708;
-  --knobby: #810e1b;
-  --selectedKnobby: #810e1b;
 
   appearance: none;
-  background: var(--bar-bg);
+  background: #ffc2a1;
   border-radius: 10px;
   position: relative;
-  width: 100%;
-  height: 11px;
-  outline: none;
+  width: 180px;
+  height: 5px;
+  cursor: pointer;
 }
 
-.progressBar::-moz-focus-outer {
-  border: 0;
+.progressBarDisabled {
+  cursor: default !important;
 }
 
-.progressBar::before {
+#volumeBar {
+  grid-area: slider;
+
+  --seek-before-width: 50%;
+  appearance: none;
+  background: #ffc2a1;
+  border-radius: 10px;
+  position: relative;
+  width: 60px;
+  height: 5px;
+  cursor: pointer;
+}
+
+#progressBar::before,
+#volumeBar::before {
   content: "";
-  height: 11px;
+  height: 5px;
   width: var(--seek-before-width);
-  background-color: var(--seek-before-color);
+  background-color: #be0f23;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
-  cursor: pointer;
 }
 
-.progressBar::-webkit-slider-thumb {
-  -webkit-appearance: none;
+#progressBar::-webkit-slider-thumb,
+#volumeBar::-webkit-slider-thumb {
+  appearance: none;
   height: 15px;
   width: 15px;
-  border-radius: 50%;
-  border: none;
-  background-color: var(--knobby);
-  cursor: pointer;
-  position: relative;
-  margin: -2px 0 0 0;
-  z-index: 3;
-  box-sizing: border-box;
 }
 
-.progressBar:active::-webkit-slider-thumb {
-  transform: scale(1.2);
-  background: var(--selectedKnobby);
+#nowPlayingCol3 {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  column-gap: 5px;
 }
 
-.nowPlayingCol3 {
-  display: grid;
-  grid-template-areas:
-    "min scrollbtn"
-    "icon slider";
-}
-
-.scroll {
+#scroll {
   grid-area: scrollbtn;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 5px;
+  position: absolute;
+  bottom: 115px;
+  right: 20px;
 }
 
-.minMax {
+#scroll p,
+#minMax p {
+  font-size: 12px;
+}
+
+#minMax {
   grid-area: min;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 5px;
+  position: absolute;
+  bottom: 65px;
+  right: 20px;
 }
 
-.volumeBar {
-  grid-area: slider;
+.minMaxMax {
+  position: static !important;
+  padding-left: 220px;
 }
 
-.mute,
-.volume {
-  grid-area: icon;
-}
 
 /* home page */
 
 .home {
   display: grid;
   grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "search playlist"
-    "stats stats";
   margin: 40px 50px;
   row-gap: 60px;
   column-gap: 60px;
 }
 
-.homeSearch {
-  grid-area: search;
-}
-
-.homeStats {
-  grid-area: stats;
-}
-
-.homePlaylists {
-  grid-area: playlist;
-}
-
 .homeSearch,
-.homeStats,
 .homePlaylists {
   background-color: rgb(95, 35, 36);
   margin: auto 0;
@@ -497,7 +555,6 @@ button:hover {
 }
 
 .homeSearch:hover,
-.homeStats:hover,
 .homePlaylists:hover {
   background-color: rgba(255, 255, 255, 0.26);
 }
@@ -635,18 +692,6 @@ button:hover {
   text-overflow: ellipsis;
 }
 
-.prevPage,
-.nextPage {
-  /* font-size: 16; */
-  background-color: #810e1b;
-  border: solid 2px #f9b6b4;
-  color: #f9b6b4;
-  height: 3vh;
-  width: 10vw;
-  border-radius: 20px;
-  font-family: "Inter", sans-serif;
-}
-
 /* dropdown options */
 
 .resultMenuIcon:hover {
@@ -752,8 +797,8 @@ button:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-  "title title"
-  "rename delete";
+    "title title"
+    "rename delete";
   row-gap: 10px;
   column-gap: 10px;
   justify-content: center;
@@ -788,17 +833,6 @@ button:hover {
   position: absolute;
   z-index: 1;
 }
-
-/* #nowPlaying p {
-  display: inline;
-  font-size: 10px;
-}
-
-.maximised {
-  height: 100vh !important;
-  width: 100vw !important;
-} */
-
 
 /* playlists page css */
 
@@ -1095,18 +1129,11 @@ button:hover {
 
   .home {
     margin: 40px;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-areas:
-      "search"
-      "playlist"
-      "stats";
     column-gap: 20px;
     row-gap: 20px;
   }
 
   .homeSearch,
-  .homeStats,
   .homePlaylists {
     font-size: 18px;
   }
@@ -1119,11 +1146,11 @@ button:hover {
   /* header hamburger */
 
   #header {
-    padding: 60px 40px 0px 40px;
+    padding: 30px 40px 20px 40px;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 1fr;
     grid-template-areas: "brand hamburger";
-    position: relative;
+    position: sticky;
     font-size: 16px;
   }
 
@@ -1145,8 +1172,8 @@ button:hover {
 
   .collapsedHeader {
     grid-area: hamburger;
-    width: 150px;
-    height: 200px;
+    width: 120px;
+    height: 150px;
     background-color: rgba(0, 0, 0, 0.8);
     padding: 15px 0px;
     display: flex !important;
@@ -1155,7 +1182,7 @@ button:hover {
     justify-self: right;
     position: absolute;
     z-index: 1;
-    top: 100px;
+    top: 80px;
     right: 40px;
   }
 
@@ -1169,7 +1196,7 @@ button:hover {
 
   #headerDropdownContent {
     top: -10px;
-    right: 133%;
+    right: 125%;
   }
 
   /* search page */
@@ -1271,18 +1298,18 @@ button:hover {
     top: 20px;
     padding: 10px;
   }
-  
+
   #resultMenuContainer button {
     font-size: 10px;
     margin: 5px 0;
   }
-  
+
   .resultMenuNewPlaylistContent-hidden {
     right: 100%;
     top: 90px;
     padding: 10px;
   }
-  
+
   /* each playlist page, similar to searchresultspage */
 
   .eachPlaylistPage-header h1 {
@@ -1294,10 +1321,10 @@ button:hover {
   }
 
   .playlistsPage-playlistRenameInputButton,
-  #playlistsPage-playlistDeleteButton  {
+  #playlistsPage-playlistDeleteButton {
     font-size: 10px;
   }
-  
+
   .eachPlaylistsPage-Rename-shown {
     padding: 10px;
     top: 132px;
@@ -1310,14 +1337,14 @@ button:hover {
     flex-direction: column;
     margin: 40px;
   } */
-  
+
   /* create new playlist */
   .playlistsPage-createPlaylist {
     width: 150px;
     height: 150px;
     font-size: 14px;
   }
-  
+
   #playlistsPage-newPlaylistNameInput,
   .playlistsPage-playlistRenameInput,
   .newPlaylistNameInput {
@@ -1325,7 +1352,7 @@ button:hover {
     width: 120px;
     font-size: 11px;
   }
-  
+
   #playlistsPage-newPlaylistNameInputButton,
   .playlistsPage-playlistRenameInputButton,
   .playlistsPage-playlistSubmitButton,
@@ -1333,15 +1360,15 @@ button:hover {
     height: 20px;
     font-size: 11px;
   }
-  
+
   /* each playlist */
-  
+
   .playlistsPage-playlists {
     margin: 20px;
     row-gap: 10px;
     column-gap: 10px;
   }
-  
+
   .playlistsPage-eachPlaylist {
     width: 80px;
     height: 40px;
@@ -1349,16 +1376,124 @@ button:hover {
     column-gap: 10px;
     padding: 25px;
   }
-  
+
   .playlistsPage-playlistName {
     font-size: 14px;
   }
-  
+
   .playlistsPage-Rename-shown {
     padding: 10px;
     top: 73px;
   }
 
+  /* now playing footer */
+
+  #nowPlaying {
+    grid-template-columns: 58% 42%;
+  }
+
+  #nowPlayingCol1 {
+    column-gap: 10px;
+  }
+
+  #trackImage {
+    height: 45px;
+    width: 45px;
+  }
+
+  #trackTitle {
+    font-size: 12px;
+  }
+
+  #trackArtist {
+    font-size: 10px;
+  }
+
+  #shuffle,
+  /* .skipStart, */
+  /* .skipEnd, */
+  #repeat,
+  #volume,
+  #volumeBar,
+  #time1,
+  #time2,
+  #minMax p,
+  #scroll p {
+    display: none;
+  }
+
+  #progressBar {
+    width: 140px;
+  }
+
+  #controls {
+    column-gap: 10px;
+  }
+
+  #scroll {
+    bottom: 120px;
+    right: 35px;
+  }
+
+  #minMax {
+    bottom: 82px;
+    right: 35px;
+  }
+
+  #nowPlayingCol2 {
+    position: absolute;
+    right: 30px;
+    justify-items: center;
+  }
+
+  .maximised {
+    grid-template-columns: 300px !important;
+    row-gap: 20px;
+  }
+
+  .nowPlayingCol1Max {
+    grid-template-columns: 300px !important;
+  }
+
+  .trackImageMax {
+    height: 300px !important;
+    width: 300px !important;
+  }
+
+  .trackTitleMax {
+    /* font-weight: bold; */
+    font-size: 18px !important;
+  }
+
+  .trackArtistMax {
+    font-size: 12px !important;
+  }
+
+  .nowPlayingCol2Max {
+    row-gap: 20px !important;
+    position: static !important;
+    justify-items: center !important;
+  }
+
+  .durationMax {
+    font-size: 12px !important;
+  }
+
+  .minMaxMax {
+    position: static !important;
+    padding-left: 100px;
+  }
+
+  .shuffleMax,
+  .repeatMax,
+  .volumeMax,
+  .time1Max,
+  .time2Max,
+  .skipStart,
+  .skipEnd,
+  .volumeBarMax {
+    display: inline !important;
+  }
 }
 
 @media screen and (max-width: 400px) {
@@ -1401,14 +1536,13 @@ button:hover {
   }
 
   .collapsedHeader {
-    width: 100px;
-    height: 140px;
+    width: 90px;
+    height: 110px;
     padding: 10px 0px;
-    top: 90px;
+    top: 70px;
   }
 
   .homeSearch,
-  .homeStats,
   .homePlaylists {
     font-size: 14px;
   }
@@ -1465,19 +1599,19 @@ button:hover {
   }
 
   /* playlists page */
-    /* playlists page */
+  /* playlists page */
 
   .playlistsPage {
     margin: 30px 20px;
   }
-  
+
   /* create new playlist */
   .playlistsPage-createPlaylist {
     width: 120px;
     height: 120px;
     font-size: 12px;
   }
-  
+
   #playlistsPage-newPlaylistNameInput,
   .playlistsPage-playlistRenameInput,
   .newPlaylistNameInput {
@@ -1485,31 +1619,31 @@ button:hover {
     width: 100px;
     font-size: 10px;
   }
-  
+
   #playlistsPage-newPlaylistNameInputButton,
   .playlistsPage-playlistRenameInputButton,
   .playlistsPage-playlistSubmitButton,
   #playlistsPage-playlistDeleteButton {
     font-size: 9px;
   }
-  
+
   /* each playlist */
 
   .playlistsPage-playlists {
     margin: 20px 0;
   }
-  
+
   .playlistsPage-eachPlaylist {
     width: 70px;
     height: 40px;
     row-gap: 7px;
     column-gap: 7px;
   }
-  
+
   .playlistsPage-playlistName {
     font-size: 12px;
   }
-  
+
   #resultMenuContainer p {
     font-size: 10px;
   }
@@ -1525,5 +1659,95 @@ button:hover {
   .eachPlaylist-title p {
     font-size: 12px;
   }
-  
+
+  /* now playing footer */
+  #nowPlaying {
+    padding: 15px;
+    grid-template-columns: 40% 35%;
+  }
+
+  #nowPlayingCol1 {
+    grid-template-columns: 35px 100%;
+  }
+
+  #trackImage {
+    height: 35px;
+    width: 35px;
+  }
+
+  #trackTitle {
+    font-size: 11px;
+  }
+
+  #trackArtist {
+    font-size: 9px;
+  }
+
+  .skipStart,
+  .skipEnd {
+    display: none;
+  }
+
+  #scroll {
+    bottom: 105px;
+    right: 17px;
+  }
+
+  #minMax {
+    bottom: 75px;
+    right: 17px;
+  }
+
+  #nowPlayingCol2 {
+    right: 15px;
+    justify-items: right;
+  }
+
+  #progressBar {
+    width: 100px;
+  }
+
+  #volumeBar {
+    width: 45px;
+  }
+
+  #controls svg {
+    height: 25px;
+    width: 25px;
+  }
+
+  #volume svg {
+    height: 25px;
+    width: 25px;
+  }
+
+  .maximised {
+    grid-template-columns: 200px !important;
+  }
+
+  .nowPlayingCol1Max {
+    grid-template-columns: 200px !important;
+  }
+
+  .trackImageMax {
+    height: 200px !important;
+    width: 200px !important;
+  }
+
+  .trackTitleMax {
+    font-size: 14px !important;
+  }
+
+  .trackArtistMax {
+    font-size: 10px !important;
+  }
+
+  .durationMax {
+    font-size: 9px !important;
+  }
+
+  .minMaxMax {
+    padding-left: 100px;
+  }
+
 }

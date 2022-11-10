@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ImStatsBars } from "react-icons/im";
 import { IoMdSearch } from "react-icons/io";
 import {RiPlayListFill} from 'react-icons/ri'
 import { IconContext } from "react-icons";
@@ -14,13 +13,6 @@ const Home = () => {
           <br />
           <IconContext.Provider value={{ size: "100px", className: 'homeIcons'}}>
             <IoMdSearch />
-          </IconContext.Provider>
-        </Link>
-        <Link to="/user/stats" className="homeStats">
-          STATS
-          <br />
-          <IconContext.Provider value={{ size: "100px", className: 'homeIcons'}}>
-            <ImStatsBars />
           </IconContext.Provider>
         </Link>
         <Link to="/user/playlists" className="homePlaylists">

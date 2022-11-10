@@ -73,11 +73,25 @@ const Layout = ({
   const handleNowPlayingSize = () => {
     document.querySelector("body").classList.toggle("hideOverflow");
     document.getElementById("nowPlaying").classList.toggle("maximised");
+    document.getElementById("nowPlayingCol1").classList.toggle("nowPlayingCol1Max");
+    document.getElementById("trackImage").classList.toggle("trackImageMax");
+    document.getElementById("trackTitle").classList.toggle("trackTitleMax");
+    document.getElementById("trackArtist").classList.toggle("trackArtistMax");
+    document.getElementById("duration").classList.toggle("durationMax");
+    document.getElementById("nowPlayingCol2").classList.toggle("nowPlayingCol2Max");
+    document.getElementById("minMax").classList.toggle("minMaxMax");
+    document.getElementById("shuffle").classList.toggle("shuffleMax");
+    document.getElementById("repeat").classList.toggle("repeatMax");
+    document.getElementById("volume").classList.toggle("volumeMax");
+    document.getElementById("time1").classList.toggle("time1Max");
+    document.getElementById("time2").classList.toggle("time2Max");
+    document.getElementById("volumeBar").classList.toggle("volumeBarMax");
+    document.getElementById("skipStart").classList.toggle("skipStartMax");
+    document.getElementById("skipEnd").classList.toggle("skipEndMax");
     setIsMaximised(!isMaximised);
   };
 
   // for audioplayer
-  const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isLooped, setIsLooped] = useState(false);
   const [isShuffled, setIsShuffled] = useState(false);
@@ -89,10 +103,14 @@ const Layout = ({
   const animationRef = useRef();
   const volumeBar = useRef();
 
+  // set default volume to 0.5
+  useEffect(() => {
+    audioPlayer.current.volume = 0.5
+  }, [])
+  
   // updating progressBar everytime current time of audio changes
   useEffect(() => {
     const seconds = Math.floor(audioPlayer.current.duration); //get rid of decimals (round down)
-    setDuration(seconds);
     progressBar.current.max = seconds; //states that the max of progress bar is .. seconds
   }, [audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState]); //occurs when audio has loaded and is ready?
 
@@ -124,7 +142,10 @@ const Layout = ({
     //updates style (width) of the left side of progressBar (before slider)
     progressBar.current.style.setProperty(
       "--seek-before-width",
-      `${(progressBar.current.value / duration) * 100}%`
+      `${
+        (progressBar.current.value / Math.floor(audioPlayer.current.duration)) *
+        100
+      }%`
     );
     setCurrentTime(progressBar.current.value); //updates state
   };
@@ -144,6 +165,9 @@ const Layout = ({
   };
 
   useEffect(() => {
+    audioPlayer.current.addEventListener("error", (event) => {
+      console.log(event.target.error);
+    });
     audioPlayer.current.addEventListener("ended", () => {
       if (nowPlaying.index === nowPlaying?.array?.length - 1) {
         const newIndex = 0;
@@ -171,7 +195,17 @@ const Layout = ({
     if (nowPlaying?.array?.length === 1) {
       audioPlayer.current.currentTime = 0;
     } else {
-      audioPlayer.current.currentTime = audioPlayer.current.duration;
+      // audioPlayer.current.currentTime = audioPlayer.current.duration;
+      if (nowPlaying.index === nowPlaying?.array?.length - 1) {
+        const newIndex = 0;
+        const newNowPlaying = { ...nowPlaying };
+        newNowPlaying.index = newIndex;
+        setNowPlaying(newNowPlaying);
+      } else {
+        const newNowPlaying = { ...nowPlaying };
+        newNowPlaying.index = newNowPlaying.index + 1;
+        setNowPlaying(newNowPlaying);
+      }
     }
     audioPlayer.current.loop = false;
     setIsLooped(false); //updates state
@@ -277,7 +311,9 @@ const Layout = ({
       </div>
 
       <div id="header">
-        <Link to="/user" className="brandHeader">JOY IN THIRTY</Link>
+        <Link to="/user" className="brandHeader">
+          JOY IN THIRTY
+        </Link>
         <IconContext.Provider
           value={{ size: "30px", className: "headerHamburger" }}
         >
@@ -292,9 +328,6 @@ const Layout = ({
           </Link>
           <Link to="/user/search" className="headerLinks">
             SEARCH
-          </Link>
-          <Link to="/user/stats" className="headerLinks">
-            STATS
           </Link>
 
           <div className="headerDropdown">
@@ -322,48 +355,46 @@ const Layout = ({
         </div>
       </div>
 
-      <Outlet />
+      <div className="outlet">
+        <Outlet />
+      </div>
 
       <div id="nowPlaying">
         <audio
           ref={audioPlayer}
           src={nowPlaying?.array?.[nowPlaying.index]?.url}
-          volume={0.5}
           autoPlay
           loop={nowPlaying?.array?.length === 1}
         />
-        <div className="nowPlayingCol1">
-          {
-            <img
-              className="trackImage"
-              src={
-                nowPlaying?.array?.[nowPlaying.index]?.image ||
-                "default grey pic"
-              }
-              width="50px"
-            />
-          }
-          <p className="trackArtist">
-            {nowPlaying?.array?.[nowPlaying.index]?.artist}
-          </p>
-          <p className="trackName">
-            {nowPlaying?.array?.[nowPlaying.index]?.title ||
-              "No Track Selected"}
-          </p>
+        <div id="nowPlayingCol1">
+          <img
+            id="trackImage"
+            src={nowPlaying?.array?.[nowPlaying.index]?.image}
+            width="50px"
+          />
+          <div>
+            <p id="trackTitle">
+              {nowPlaying?.array?.[nowPlaying.index]?.title ||
+                "No Track Selected"}
+            </p>
+            <p id="trackArtist">
+              {nowPlaying?.array?.[nowPlaying.index]?.artist}
+            </p>
+          </div>
         </div>
 
-        <div className="nowPlayingCol2">
-          <div className="controls">
+        <div id="nowPlayingCol2">
+          <div id="controls">
             <IconContext.Provider
-              value={{ size: "30px", className: "controls" }}
+              value={{ size: "30px"}}
             >
-              <TbArrowsShuffle onClick={handleShuffle} className="shuffle" />
+              <TbArrowsShuffle onClick={handleShuffle} id="shuffle" />
 
               {/* 1) if currentime is more than 3 seconds, change currenttime to 0 (play song from start)
           2) else, if its first song in playlist, go to prev url. if first song, go to last song*/}
               <BsFillSkipStartFill
                 onClick={handleSkipStart}
-                className="skipStart"
+                id="skipStart"
               />
 
               {isPlaying ? (
@@ -373,67 +404,93 @@ const Layout = ({
               )}
 
               {/* onclick: //currentime=max/duration// >>>> 1) if not last song in playlist, go to next url. if last song, go to first song*/}
-              <BsFillSkipEndFill onClick={handleSkipEnd} className="skipEnd" />
+              <BsFillSkipEndFill onClick={handleSkipEnd} id="skipEnd" />
 
               {/* onclick 1) toggle such that repeats/does not repeat current track. default repeat for playlists (even with one song inside)*/}
               <TbRepeatOnce
                 onClick={handleRepeatCurrentTrack}
-                className="repeat"
+                id="repeat"
               />
             </IconContext.Provider>
           </div>
 
-          {/* current time */}
-          <p className="time1">{calculateTime(currentTime) || "00:00"}</p>
+          <div id="duration">
+            {/* current time */}
+            <p id="time1">{calculateTime(currentTime) || "00:00"}</p>
 
-          {/* progress bar */}
-          <input
-            className="progressBar"
-            type="range"
-            defaultValue="0"
-            ref={progressBar}
-            onChange={changeRange}
-          />
+            {/* progress bar */}
+            {nowPlaying?.array ? (
+              <input
+                id="progressBar"
+                type="range"
+                defaultValue="0"
+                ref={progressBar}
+                onChange={changeRange}
+              />
+            ) : (
+              <input
+              id="progressBar"
+              className="progressBarDisabled"
+                type="range"
+                disabled
+                defaultValue="0"
+                ref={progressBar}
+                onChange={changeRange}
+              />
+            )}
 
-          {/* total duration */}
-          <p className="time2">
-            {(duration && !isNaN(duration) && calculateTime(duration)) ||
-              "00:00"}
-          </p>
+            {/* total duration */}
+            <p id="time2">
+              {(Math.floor(audioPlayer?.current?.duration) &&
+                !isNaN(Math.floor(audioPlayer?.current?.duration)) &&
+                calculateTime(Math.floor(audioPlayer?.current?.duration))) ||
+                "00:00"}
+            </p>
+          </div>
         </div>
 
-        <div className="nowPlayingCol3">
+        <div id="nowPlayingCol3">
           {isMaximised ? (
             ""
           ) : (
-            <IconContext.Provider value={{ size: "30px", className: "scroll" }}>
-              <AiOutlineUpSquare onClick={handleScrollToTop} />
-            </IconContext.Provider>
+            <div id="scroll">
+              <p>scroll to top</p>
+              <IconContext.Provider
+                value={{ size: "20px", className: "scrollIcon" }}
+              >
+                <AiOutlineUpSquare onClick={handleScrollToTop} />
+              </IconContext.Provider>
+            </div>
           )}
-          <IconContext.Provider value={{ size: "30px", className: "volume" }}>
+
+          <IconContext.Provider value={{ size: "20px", className: "volume" }}>
             {/* onclick: 1) mute - audioPlayer.volume = 0 (0-1) 2) create progressbar, same concept*/}
             {isMuted.muted ? (
               <BsFillVolumeMuteFill onClick={handleMute} className="mute" />
             ) : (
-              <BsFillVolumeUpFill onClick={handleMute} className="volume" />
+              <BsFillVolumeUpFill onClick={handleMute} id="volume" />
             )}
           </IconContext.Provider>
           <input
-            className="volumeBar"
+            id="volumeBar"
             type="range"
-            defaultValue="100"
+            defaultValue="50"
             ref={volumeBar}
             onChange={changeRangeVolume}
           />
 
-          {/* maximise/minimise */}
-          <IconContext.Provider value={{ size: "30px", className: "minMax" }}>
-            {isMaximised ? (
-              <AiOutlineMinusSquare onClick={handleNowPlayingSize} />
-            ) : (
-              <AiOutlinePlusSquare onClick={handleNowPlayingSize} />
-            )}
-          </IconContext.Provider>
+          <div id="minMax">
+          {isMaximised ? <p>minimise</p> : <p>maximise</p>}
+            <IconContext.Provider
+              value={{ size: "20px", className: "minMaxIcon" }}
+            >
+              {isMaximised ? (
+                <AiOutlineMinusSquare onClick={handleNowPlayingSize} />
+              ) : (
+                <AiOutlinePlusSquare onClick={handleNowPlayingSize} />
+              )}
+            </IconContext.Provider>
+          </div>
         </div>
       </div>
     </div>

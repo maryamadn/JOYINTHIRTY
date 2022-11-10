@@ -12,7 +12,6 @@ import notifyAddedToExistingPlaylist from "../../Toastify/AddedToExistingPlaylis
 import notifyRemovedFromPlaylist from "../../Toastify/RemovedFromPlaylist";
 import notifyRenameSuccessful from "../../Toastify/RenameSuccessful";
 import notifyIdenticalRenameInput from "../../Toastify/IdenticalRenameInput";
-import notifyDeletedPlaylist from "../../Toastify/DeletedPlaylist";
 
 momentDurationFormatSetup(moment);
 
@@ -31,8 +30,6 @@ const EachPlaylist = ({
   const [playlist, setPlaylist] = useState(
     library[playlistIndex]
   );
-
-  console.log(library)
 
   const handleSetNowPlaying = (index) => {
     const newNowPlaying = {};
@@ -76,7 +73,6 @@ const EachPlaylist = ({
       notifyRenameSuccessful();
       handleRenamePlaylistMenu();
     }
-    console.log(playlist)
   };
 
   const handleDeletePlaylist = () => {
