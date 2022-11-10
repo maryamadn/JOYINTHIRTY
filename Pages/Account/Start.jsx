@@ -1,24 +1,19 @@
-import {Outlet} from 'react-router-dom'
-import {MdOutlineLibraryMusic} from 'react-icons/md'
-import { IconContext } from 'react-icons'
+import { Outlet } from "react-router-dom";
+import { MdOutlineLibraryMusic } from "react-icons/md";
+import { IconContext } from "react-icons";
 
 const Start = () => {
-
-    const style = {
-        fontSize: '40px'
-    }
-    return (
-        <>
-        <div className='startPage'>
-
-        <IconContext.Provider value={{ size: "80px", className: "logo" }}>
-        <MdOutlineLibraryMusic />
+  return (
+    <>
+      <div className="startPage">
+        <IconContext.Provider value={{ size: "3em", className: "logo" }}>
+          <MdOutlineLibraryMusic />
         </IconContext.Provider>
-        <h1 className='brand'>music.</h1>
+        <h1 className="brand">JOY IN THIRTY</h1>
         <Outlet />
-        </div>
-        </>
-    )
-}
+      </div>
+    </>
+  );
+};
 
-export default Start
+export default Start;

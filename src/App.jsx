@@ -1,7 +1,6 @@
 import "./App.css";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ForgotPw from "../Pages/Account/ForgotPw";
 import SignIn from "../Pages/Account/SignIn";
 import SignUp from "../Pages/Account/SignUp";
 import Start from "../Pages/Account/Start";
@@ -10,10 +9,9 @@ import Home from "../Pages/Music/Home";
 import Playlists from "../Pages/Music/Playlists";
 import EachPlaylist from "../Pages/Music/EachPlaylist";
 import Search from "../Pages/Music/Search";
-import SearchDefault from "../Pages/Music/SearchDefault";
 import SearchResults from "../Pages/Music/SearchResults";
 import Stats from "../Pages/Music/Stats";
-import Account from "../Pages/Music/Account";
+import Settings from "../Pages/Music/Settings";
 
 function App() {
   const [userDetails, setUserDetails] = useState({});
@@ -26,9 +24,8 @@ function App() {
   const [results, setResults] = useState([]);
 
   // localStorage.clear();
-  console.log(localStorage);
-  console.log(userDetails);
-  console.log(library)
+  // console.log(localStorage);
+  // console.log(library)
 
   useEffect(() => {
     if (Object.keys(userDetails).length !== 0) {
@@ -56,7 +53,6 @@ function App() {
               path="/signup"
               element={<SignUp setUserDetails={setUserDetails} setLibrary={setLibrary} />}
             />
-            <Route path="/forgotpw" element={<ForgotPw />} />
           </Route>
           <Route
             path="/user"
@@ -93,7 +89,6 @@ function App() {
               path="/user/search"
               element={<Search setResults={setResults} />}
             >
-              <Route index element={<SearchDefault />} />
               <Route
                 path="/user/search/results"
                 element={
@@ -110,7 +105,7 @@ function App() {
               />
             </Route>
             <Route path="/user/stats" element={<Stats />} />
-            <Route path="/user/account" element={<Account />} />
+            <Route path="/user/settings" element={<Settings userDetails={userDetails} setUserDetails={setUserDetails}/>} />
           </Route>
         </Routes>
       </BrowserRouter>

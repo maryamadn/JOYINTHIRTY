@@ -1,31 +1,59 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import notifyInvalidPlaylistName from "../../Toastify/InvalidPlaylistName";
+import notifyIdenticalRenameInput from '../../Toastify/IdenticalRenameInput'
+import notifyRenameSuccessful from '../../Toastify/RenameSuccessful'
+import notifyAddedNewPlaylist from '../../Toastify/AddedNewPlaylist'
+import notifyDeletedPlaylist from '../../Toastify/DeletedPlaylist'
 
 const Playlists = ({ library, setLibrary }) => {
-  // const inputRef = useRef();
-
   const [values, setValues] = useState({});
+  const [currentIndexForEventListener, setCurrentIndexForEventListener] =
+    useState("");
 
-  const handleCreatePlaylistMenu = () => {
+  const handleRenamePlaylistMenu = (playlistIndex) => {
     document
-      .getElementById('playlistsPage-newPlaylistNameInput')
-      .classList.toggle("playlistsPage-newPlaylistNameInput-shown");
-      document
-      .getElementById('playlistsPage-newPlaylistNameInputButton')
-      .classList.toggle("playlistsPage-newPlaylistNameInputButton-shown");
+      .getElementById(`playlistsPage-Rename-${playlistIndex}`)
+      .classList.toggle("playlistsPage-Rename-shown");
+    setCurrentIndexForEventListener(playlistIndex);
   };
 
-  const handleRenamePlaylistMenu = () => {
-    document
-      .getElementById('playlistsPage-playlistRenameInput')
-      .classList.toggle("playlistsPage-playlistRenameInput-shown");
-      document
-      .getElementById('playlistsPage-playlistRenameInputButton')
-      .classList.toggle("playlistsPage-playlistRenameInputButton-shown");
-  };
+  const rename = document.getElementById(
+    `playlistsPage-playlistRenameInputButton-${currentIndexForEventListener}`
+  );
+  if (rename !== null && currentIndexForEventListener !== null) {
+    const renameContent = document.getElementById(
+      `playlistsPage-Rename-${currentIndexForEventListener}`
+    );
+    const renameInput = document.getElementById(
+      `playlistsPage-playlistRenameInput-${currentIndexForEventListener}`
+    );
+    const submitButton = document.getElementById(
+      `playlistsPage-playlistSubmitButton-${currentIndexForEventListener}`
+    );
+
+    document.body.addEventListener("click", (event) => {
+      if (currentIndexForEventListener !== "") {
+        if (
+          event.target !== rename &&
+          event.target !== renameContent &&
+          event.target !== renameInput &&
+          event.target !== submitButton
+        ) {
+          if (renameContent !== null) {
+            renameContent.classList.remove("playlistsPage-Rename-shown");
+          }
+        }
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      renameContent.classList.remove("playlistsPage-Rename-shown");
+    });
+  }
 
   const handleInputChange = (e) => {
-    console.log(e.target);
     const { name, value } = e.target;
     setValues({
       [name]: value,
@@ -33,109 +61,114 @@ const Playlists = ({ library, setLibrary }) => {
   };
 
   const handleRenamePlaylist = (playlistIndex, playlistName) => {
-    if (values.rename === "" || values.rename === undefined) {
-      console.log("alert tkle");
-    } else if (values.rename === playlistName) {
-      console.log("identical name entered");
+    if (values[playlistIndex] === "" || values[playlistIndex] === undefined) {
+      notifyInvalidPlaylistName();
+    } else if (values[playlistIndex] === playlistName) {
+      notifyIdenticalRenameInput();
     } else {
       const updatedLibrary = [...library];
-      updatedLibrary[playlistIndex][values.rename] =
+      updatedLibrary[playlistIndex][values[playlistIndex]] =
         updatedLibrary[playlistIndex][playlistName];
       delete updatedLibrary[playlistIndex][playlistName];
 
       setLibrary(updatedLibrary);
-      values.rename = ""; //reset input field
+      values[playlistIndex] = ""; //reset input field
+      notifyRenameSuccessful()
+      handleRenamePlaylistMenu(playlistIndex);
     }
-    handleRenamePlaylistMenu()
   };
 
   const handleDeletePlaylist = (playlistIndex) => {
     const updatedLibrary = [...library];
     updatedLibrary.splice(playlistIndex, 1);
     setLibrary(updatedLibrary);
+    notifyDeletedPlaylist();
   };
 
   const handleAddNewPlaylist = () => {
     if (values.name === "" || values.name === undefined) {
-      console.log("alert tkle");
+      notifyInvalidPlaylistName();
     } else {
       const newPlaylist = {};
       newPlaylist[values.name] = [];
       values.name = ""; //reset input field
 
       setLibrary([...library, newPlaylist]);
-      // alert("added new playlist");
+      notifyAddedNewPlaylist();
     }
-    handleCreatePlaylistMenu()
   };
 
   return (
-    <div className="playlistsPage">
-      <div className="playlistsPage-playlists">
-        {library.map((playlist, index) => {
-          const playlistName = Object.keys(playlist)[0];
-          const playlistIndex = index;
-          return (
-            <div className="playlistsPage-eachPlaylist" key={` ${index}`}>
-              <Link
-                to={`/user/eachplaylist/${playlistIndex}`}
-                className="playlistsPage-playlistName"
-              >
-                {playlistName}
-              </Link>
-              <div
-                id={`dropdown-content-index??`}
-                className="dropdown-content??"
-              >
-                <div className="playlistsPage-playlistOptions">
-                  <p onClick={handleRenamePlaylistMenu}>rename playlist</p>
+    <>
+      <div className="playlistsPage">
+        <div className="playlistsPage-createPlaylist">
+          <p>+</p>
+          <p>create new playlist</p>
+          <input
+            id="playlistsPage-newPlaylistNameInput"
+            value={values.name || ""}
+            name="name"
+            onChange={handleInputChange}
+            placeholder="Playlist Name"
+          />
+          <button
+            id="playlistsPage-newPlaylistNameInputButton"
+            onClick={handleAddNewPlaylist}
+          >
+            create
+          </button>
+        </div>
+        <div className="playlistsPage-playlists">
+          {library.map((playlist, index) => {
+            const playlistName = Object.keys(playlist)[0];
+            const playlistIndex = index;
+            return (
+              <div className="playlistsPage-eachPlaylist" key={` ${index}`}>
+                <Link
+                  to={`/user/eachplaylist/${playlistIndex}`}
+                  className="playlistsPage-playlistName"
+                >
+                  {playlistName}
+                </Link>
+                <button
+                  id={`playlistsPage-playlistRenameInputButton-${playlistIndex}`}
+                  className="playlistsPage-playlistRenameInputButton"
+                  onClick={() => handleRenamePlaylistMenu(playlistIndex)}
+                >
+                  rename
+                </button>
+                <div id={`playlistsPage-Rename-${playlistIndex}`}>
                   <input
-                    id="playlistsPage-playlistRenameInput"
-                    value={values.rename || ""}
-                    name="rename"
+                    id={`playlistsPage-playlistRenameInput-${playlistIndex}`}
+                    className="playlistsPage-playlistRenameInput"
+                    value={values[playlistIndex] || ""}
+                    name={playlistIndex}
                     onChange={handleInputChange}
-                    placeholder="New Playlist Name"
+                    placeholder="Playlist Name"
                   />
                   <button
-                    id="playlistsPage-playlistRenameInputButton"
+                  id={`playlistsPage-playlistSubmitButton-${playlistIndex}`}
+                    className="playlistsPage-playlistSubmitButton"
                     onClick={() =>
                       handleRenamePlaylist(playlistIndex, playlistName)
                     }
                   >
-                    rename
+                    submit
                   </button>
-                <p
+                </div>
+                <button
+                  id="playlistsPage-playlistDeleteButton"
                   onClick={() => handleDeletePlaylist(playlistIndex)}
                 >
-                  delete playlist
-                </p>
-                </div>
+                  delete
+                </button>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-      <div
-        className="playlistsPage-createPlaylist"
-        onClick={handleCreatePlaylistMenu}
-      >
-        <p>+</p>
-        <p>create new playlist</p>
-      </div>
-        <input
-          id="playlistsPage-newPlaylistNameInput"
-          value={values.name || ""}
-          name="name"
-          onChange={handleInputChange}
-          placeholder="Playlist Name"
-        />
-        <button
-          id="playlistsPage-newPlaylistNameInputButton"
-          onClick={handleAddNewPlaylist}
-        >
-          create
-        </button>
-    </div>
+      <ToastContainer />
+    </>
   );
 };
 

@@ -7,10 +7,14 @@ import {
   BsFillSkipEndFill,
   BsFillVolumeUpFill,
   BsFillVolumeMuteFill,
-  BsThreeDots
 } from "react-icons/bs";
-import {AiOutlinePlusSquare, AiOutlineMinusSquare, AiOutlineUpSquare} from 'react-icons/ai'
+import {
+  AiOutlinePlusSquare,
+  AiOutlineMinusSquare,
+  AiOutlineUpSquare,
+} from "react-icons/ai";
 import { TbRepeatOnce, TbArrowsShuffle } from "react-icons/tb";
+import { HiOutlineMenu } from "react-icons/hi";
 import { IconContext } from "react-icons";
 
 const Layout = ({
@@ -31,6 +35,34 @@ const Layout = ({
       .getElementById("headerDropdownContent")
       .classList.toggle("headerDropdownContent");
   };
+
+  const openCollapsedHeader = () => {
+    document
+      .getElementById("collapsedHeader")
+      .classList.toggle("collapsedHeader");
+  };
+
+  document.body.addEventListener("click", (event) => {
+    const headerDropdown = document.getElementById("menu");
+    const headerHamburger = document.getElementById("headerHamburger");
+    if (event.target !== headerHamburger && event.target !== headerDropdown) {
+      document
+        .getElementById("headerDropdownContent")
+        .classList.add("headerDropdownContent");
+      document
+        .getElementById("collapsedHeader")
+        .classList.remove("collapsedHeader");
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    document
+      .getElementById("headerDropdownContent")
+      .classList.add("headerDropdownContent");
+    document
+      .getElementById("collapsedHeader")
+      .classList.remove("collapsedHeader");
+  });
 
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -234,7 +266,7 @@ const Layout = ({
   };
 
   return (
-    <>
+    <div>
       <div id="welcome">
         <h1>
           WELCOME
@@ -245,35 +277,47 @@ const Layout = ({
       </div>
 
       <div id="header">
-        <Link to="/user" className="headerLinks">
-          HOME
-        </Link>
-        <Link to="/user/playlists" className="headerLinks">
-          PLAYLISTS
-        </Link>
-        <Link to="/user/search" className="headerLinks">
-          SEARCH
-        </Link>
-        <Link to="/user/stats" className="headerLinks">
-          STATS
-        </Link>
+        <Link to="/user" className="brandHeader">JOY IN THIRTY</Link>
+        <IconContext.Provider
+          value={{ size: "30px", className: "headerHamburger" }}
+        >
+          <HiOutlineMenu onClick={openCollapsedHeader} id="headerHamburger" />
+        </IconContext.Provider>
+        <div id="collapsedHeader">
+          <Link to="/user" className="headerLinks">
+            HOME
+          </Link>
+          <Link to="/user/playlists" className="headerLinks">
+            PLAYLISTS
+          </Link>
+          <Link to="/user/search" className="headerLinks">
+            SEARCH
+          </Link>
+          <Link to="/user/stats" className="headerLinks">
+            STATS
+          </Link>
 
-        <div className="headerDropdown">
-          <IconContext.Provider value={{ size: "4vw", className: "menu" }}>
-            <BsThreeDots onClick={handleHeaderDropdown} />
-          </IconContext.Provider>
-          <div id="headerDropdownContent" className="headerDropdownContent">
-            <Link to="/user/account" className="menuOptions menuOption1">
-              Account
-            </Link>
-            <br />
-            <Link
-              to="/"
-              className="menuOptions menuOption2"
-              onClick={() => setNowPlaying([])}
-            >
-              Logout
-            </Link>
+          <div className="headerDropdown">
+            <p id="menu" className="menu" onClick={handleHeaderDropdown}>
+              ACCOUNT
+            </p>
+            <div id="headerDropdownContent" className="headerDropdownContent">
+              <Link to="/user/settings" className="menuOptions">
+                SETTINGS
+              </Link>
+              <br />
+              <br />
+              <Link
+                to="/"
+                className="menuOptions"
+                onClick={() => {
+                  setNowPlaying([]);
+                  document.body.removeEventListener("click");
+                }}
+              >
+                LOGOUT
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -310,7 +354,9 @@ const Layout = ({
 
         <div className="nowPlayingCol2">
           <div className="controls">
-            <IconContext.Provider value={{ size: "30px", className: "controls" }}>
+            <IconContext.Provider
+              value={{ size: "30px", className: "controls" }}
+            >
               <TbArrowsShuffle onClick={handleShuffle} className="shuffle" />
 
               {/* 1) if currentime is more than 3 seconds, change currenttime to 0 (play song from start)
@@ -361,18 +407,17 @@ const Layout = ({
             ""
           ) : (
             <IconContext.Provider value={{ size: "30px", className: "scroll" }}>
-            <AiOutlineUpSquare onClick={handleScrollToTop}/>
+              <AiOutlineUpSquare onClick={handleScrollToTop} />
             </IconContext.Provider>
           )}
-            <IconContext.Provider value={{ size: "30px", className: "volume" }}>
-
-          {/* onclick: 1) mute - audioPlayer.volume = 0 (0-1) 2) create progressbar, same concept*/}
-          {isMuted.muted ? (
-            <BsFillVolumeMuteFill onClick={handleMute} className="mute" />
+          <IconContext.Provider value={{ size: "30px", className: "volume" }}>
+            {/* onclick: 1) mute - audioPlayer.volume = 0 (0-1) 2) create progressbar, same concept*/}
+            {isMuted.muted ? (
+              <BsFillVolumeMuteFill onClick={handleMute} className="mute" />
             ) : (
               <BsFillVolumeUpFill onClick={handleMute} className="volume" />
-              )}
-              </IconContext.Provider>
+            )}
+          </IconContext.Provider>
           <input
             className="volumeBar"
             type="range"
@@ -383,11 +428,15 @@ const Layout = ({
 
           {/* maximise/minimise */}
           <IconContext.Provider value={{ size: "30px", className: "minMax" }}>
-            {isMaximised ? <AiOutlineMinusSquare onClick={handleNowPlayingSize}/> : <AiOutlinePlusSquare onClick={handleNowPlayingSize} />}
+            {isMaximised ? (
+              <AiOutlineMinusSquare onClick={handleNowPlayingSize} />
+            ) : (
+              <AiOutlinePlusSquare onClick={handleNowPlayingSize} />
+            )}
           </IconContext.Provider>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
