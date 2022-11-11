@@ -24,7 +24,7 @@ function App() {
 
   const [results, setResults] = useState([]);
 
-  localStorage.clear();
+  // localStorage.clear();
   console.log(localStorage);
   // console.log(userDetails)
   // console.log(library)
