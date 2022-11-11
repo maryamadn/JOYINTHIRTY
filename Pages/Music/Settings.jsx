@@ -3,8 +3,9 @@ import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.min.css";
-
-const customId = "custom-id-yes";
+import notifyIncorrectPassword from "../../Toastify/Settings/IncorrectPassword";
+import notifyUnmatchedNewPassword from "../../Toastify/Settings/UnmatchedNewPassword";
+import notifyUsernameTaken from "../../Toastify/Settings/UsernameTaken";
 
 const Settings = ({ userDetails, setUserDetails }) => {
   const [changeUsername, setChangeUsername] = useState(false);
@@ -15,47 +16,8 @@ const Settings = ({ userDetails, setUserDetails }) => {
   const newPasswordInput = useRef();
   const confirmNewPasswordInput = useRef();
 
-  const notifyUsernameTaken = () => {
-    toast.error("Username taken!", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      toastId: customId,
-    });
-  };
-
-  const notifyIncorrectPassword = () => {
-    toast.error("Incorrect password!", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      toastId: customId,
-    });
-  };
-
-  const notifyNewPassword = () => {
-    toast.error("New password does not match!", {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-      toastId: customId,
-    });
-  };
+  // console.log(localStorage)
+  // console.log(userDetails)
 
   const handleChangeUsername = () => {
     setChangeUsername(true);
@@ -66,12 +28,15 @@ const Settings = ({ userDetails, setUserDetails }) => {
   };
 
   const handleSubmitChangeUsername = () => {
-    const user = userDetails;
+    const user = {...userDetails};
     const username = usernameInput.current.value;
     if (localStorage.getItem(username) === null) {
       user.username = username;
+      console.log(user)
+      console.log(userDetails)
       localStorage.removeItem(userDetails.username);
       localStorage.setItem(user.username, JSON.stringify(user));
+      console.log(localStorage)
       setUserDetails(user);
       setChangeUsername(false);
     } else {
@@ -87,9 +52,9 @@ const Settings = ({ userDetails, setUserDetails }) => {
       if (
         newPasswordInput.current.value !== confirmNewPasswordInput.current.value
       ) {
-        notifyNewPassword();
+        notifyUnmatchedNewPassword();
       } else {
-        const user = userDetails;
+        const user = {...userDetails};
         user.password = newPasswordInput.current.value;
         localStorage.removeItem(userDetails.username);
         localStorage.setItem(user.username, JSON.stringify(user));
