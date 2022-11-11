@@ -24,6 +24,10 @@ const Layout = ({
   setNowPlaying,
   isPlaying,
   setIsPlaying,
+  isShuffled,
+  setIsShuffled,
+  isLooped,
+  setIsLooped
 }) => {
   const handleHideWelcome = () => {
     document.getElementById("welcome").classList.add("hideWelcome");
@@ -93,9 +97,10 @@ const Layout = ({
 
   // for audioplayer
   const [currentTime, setCurrentTime] = useState(0);
-  const [isLooped, setIsLooped] = useState(false);
-  const [isShuffled, setIsShuffled] = useState(false);
+  // const [isLooped, setIsLooped] = useState(false);
+  // const [isShuffled, setIsShuffled] = useState(false);
   const [isMuted, setIsMuted] = useState({ muted: false, prevVolume: 0 });
+  const [resultsUnshuffled, setResultsUnshuffled] = useState([])
 
   // references to certain components
   const audioPlayer = useRef();
@@ -239,17 +244,23 @@ const Layout = ({
     const prevValue = isLooped;
     if (!prevValue) {
       audioPlayer.current.loop = true;
+      document.getElementById('repeat').classList.add('isRepeating')
     } else {
       audioPlayer.current.loop = false;
+      document.getElementById('repeat').classList.remove('isRepeating')
     }
     setIsLooped(!prevValue); //updates state
   };
 
   const handleShuffle = () => {
     //The Fisher-Yates algorith
+    console.log(nowPlaying)
     const prevValue = isShuffled;
     const newNowPlaying = nowPlaying;
     if (!prevValue) {
+      if (nowPlaying?.playlistIndex === 'searchResultPlaylist') {
+        setResultsUnshuffled(newNowPlaying?.array)
+      }
       const shuffledArray = [...newNowPlaying?.array];
       for (let i = shuffledArray.length - 1; i > 0; i--) {
         //for each element in array
@@ -258,12 +269,21 @@ const Layout = ({
         shuffledArray[i] = shuffledArray[j]; //swap element in array with a random element in array
         shuffledArray[j] = temp; //swap
       }
+      newNowPlaying.index = shuffledArray.indexOf(nowPlaying.array[nowPlaying.index])
       newNowPlaying.array = shuffledArray;
+      document.getElementById('shuffle').classList.add('isShuffling')
     } else {
-      const originalArray = Object.values(
-        library[nowPlaying?.playlistIndex]
-      )[0];
+      let originalArray = []
+      if (nowPlaying?.playlistIndex === 'searchResultPlaylist') {
+        originalArray = resultsUnshuffled
+      } else {
+        originalArray = Object.values(
+          library[nowPlaying?.playlistIndex]
+        )[0];
+      }
+      newNowPlaying.index = originalArray.indexOf(nowPlaying.array[nowPlaying.index])
       newNowPlaying.array = originalArray; //back to original array
+      document.getElementById('shuffle').classList.remove('isShuffling')
     }
     setNowPlaying(newNowPlaying);
     setIsShuffled(!prevValue);

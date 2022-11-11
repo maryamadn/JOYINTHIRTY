@@ -20,7 +20,8 @@ const EachPlaylist = ({
   setLibrary,
   nowPlaying,
   setNowPlaying,
-  isPlaying,
+  setIsShuffled,
+  setIsLooped,
   setIsPlaying,
 }) => {
   const navigate = useNavigate();
@@ -36,8 +37,11 @@ const EachPlaylist = ({
     newNowPlaying.array = [...playlist[playlistName]];
     newNowPlaying.index = index;
     newNowPlaying.playlistIndex = playlistIndex;
-    const prevValue = isPlaying;
-    setIsPlaying(!prevValue);
+    setIsShuffled(false)
+    document.getElementById('shuffle').classList.remove('isShuffling')
+    setIsLooped(false)
+    document.getElementById('repeat').classList.remove('isRepeating')
+    setIsPlaying(true);
     setNowPlaying(newNowPlaying);
   };
 

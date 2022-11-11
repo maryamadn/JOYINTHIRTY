@@ -352,9 +352,21 @@ button:hover {
   align-items: center;
 }
 
-#nowPlaying svg {
+#nowPlaying svg,
+.result svg {
   cursor: pointer;
 }
+
+#nowPlaying svg:hover,
+.result svg:hover {
+  color: #be0f23;
+}
+
+.isShuffling,
+.isRepeating {
+  color: #be0f23;
+}
+
 
 #nowPlaying p {
   white-space: nowrap;
@@ -529,7 +541,6 @@ button:hover {
   position: static !important;
   padding-left: 220px;
 }
-
 
 /* home page */
 
@@ -1749,5 +1760,4 @@ button:hover {
   .minMaxMax {
     padding-left: 100px;
   }
-
 }

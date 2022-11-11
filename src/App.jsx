@@ -19,21 +19,27 @@ function App() {
 
   const [nowPlaying, setNowPlaying] = useState({});
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [isLooped, setIsLooped] = useState(false);
 
   const [results, setResults] = useState([]);
 
   // localStorage.clear();
-  console.log(localStorage);
-  console.log(userDetails)
+  // console.log(localStorage);
+  // console.log(userDetails)
   // console.log(library)
 
   useEffect(() => {
     if (Object.keys(userDetails).length !== 0) {
-      const updatedUserDetails = {...userDetails}
-      updatedUserDetails.library = library
-      localStorage.setItem(updatedUserDetails.username, JSON.stringify(updatedUserDetails))
+      const updatedUserDetails = { ...userDetails };
+      updatedUserDetails.library = library;
+      localStorage.setItem(
+        updatedUserDetails.username,
+        JSON.stringify(updatedUserDetails)
+      );
     }
-    }, [library])
+    console.log('saved!')
+  }, [library]);
 
   return (
     <>
@@ -51,7 +57,12 @@ function App() {
             />
             <Route
               path="/signup"
-              element={<SignUp setUserDetails={setUserDetails} setLibrary={setLibrary} />}
+              element={
+                <SignUp
+                  setUserDetails={setUserDetails}
+                  setLibrary={setLibrary}
+                />
+              }
             />
           </Route>
           <Route
@@ -64,6 +75,10 @@ function App() {
                 setNowPlaying={setNowPlaying}
                 isPlaying={isPlaying}
                 setIsPlaying={setIsPlaying}
+                isShuffled={isShuffled}
+                setIsShuffled={setIsShuffled}
+                isLooped={isLooped}
+                setIsLooped={setIsLooped}
               />
             }
           >
@@ -81,7 +96,8 @@ function App() {
                   nowPlaying={nowPlaying}
                   setNowPlaying={setNowPlaying}
                   setIsPlaying={setIsPlaying}
-                  isPlaying={isPlaying}
+                  setIsShuffled={setIsShuffled}
+                  setIsLooped={setIsLooped}
                 />
               }
             />
@@ -100,11 +116,21 @@ function App() {
                     setNowPlaying={setNowPlaying}
                     setIsPlaying={setIsPlaying}
                     isPlaying={isPlaying}
+                    setIsShuffled={setIsShuffled}
+                    setIsLooped={setIsLooped}
                   />
                 }
               />
             </Route>
-            <Route path="/user/settings" element={<Settings userDetails={userDetails} setUserDetails={setUserDetails}/>} />
+            <Route
+              path="/user/settings"
+              element={
+                <Settings
+                  userDetails={userDetails}
+                  setUserDetails={setUserDetails}
+                />
+              }
+            />
           </Route>
         </Routes>
       </BrowserRouter>

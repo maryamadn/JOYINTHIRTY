@@ -21,7 +21,8 @@ const SearchResults = ({
   setLibrary,
   nowPlaying,
   setNowPlaying,
-  isPlaying,
+  setIsShuffled,
+  setIsLooped,
   setIsPlaying,
 }) => {
 
@@ -29,8 +30,12 @@ const SearchResults = ({
     const newNowPlaying = {};
     newNowPlaying.array = [...results];
     newNowPlaying.index = index;
-    const prevValue = isPlaying;
-    setIsPlaying(!prevValue);
+    newNowPlaying.playlistIndex = 'searchResultPlaylist';
+    setIsShuffled(false)
+    document.getElementById('shuffle').classList.remove('isShuffling')
+    setIsLooped(false)
+    document.getElementById('repeat').classList.remove('isRepeating')
+    setIsPlaying(true);
     setNowPlaying(newNowPlaying);
   };
 
@@ -111,13 +116,10 @@ const SearchResults = ({
         setNowPlaying(newNowPlaying);
       }
 
-      const updatedLibrary = library;
+      const updatedLibrary = [...library];
       updatedLibrary[i][playlistName] = withAddedTrack;
       setLibrary(updatedLibrary);
       notifyAddedToExistingPlaylist();
-      // document
-      //   .getElementById(`resultMenuContent-${index}`)
-      //   .classList.remove("resultMenuContent-hidden");
     } else {
       notifyTrackAlrInPlaylist();
     }
