@@ -24,8 +24,8 @@ function App() {
 
   const [results, setResults] = useState([]);
 
-  // localStorage.clear();
-  // console.log(localStorage);
+  localStorage.clear();
+  console.log(localStorage);
   // console.log(userDetails)
   // console.log(library)
 
@@ -38,7 +38,6 @@ function App() {
         JSON.stringify(updatedUserDetails)
       );
     }
-    console.log('saved!')
   }, [library]);
 
   return (
