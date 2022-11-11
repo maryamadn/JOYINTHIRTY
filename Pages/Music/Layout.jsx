@@ -27,7 +27,7 @@ const Layout = ({
   isShuffled,
   setIsShuffled,
   isLooped,
-  setIsLooped
+  setIsLooped,
 }) => {
   const handleHideWelcome = () => {
     document.getElementById("welcome").classList.add("hideWelcome");
@@ -77,12 +77,16 @@ const Layout = ({
   const handleNowPlayingSize = () => {
     document.querySelector("body").classList.toggle("hideOverflow");
     document.getElementById("nowPlaying").classList.toggle("maximised");
-    document.getElementById("nowPlayingCol1").classList.toggle("nowPlayingCol1Max");
+    document
+      .getElementById("nowPlayingCol1")
+      .classList.toggle("nowPlayingCol1Max");
     document.getElementById("trackImage").classList.toggle("trackImageMax");
     document.getElementById("trackTitle").classList.toggle("trackTitleMax");
     document.getElementById("trackArtist").classList.toggle("trackArtistMax");
     document.getElementById("duration").classList.toggle("durationMax");
-    document.getElementById("nowPlayingCol2").classList.toggle("nowPlayingCol2Max");
+    document
+      .getElementById("nowPlayingCol2")
+      .classList.toggle("nowPlayingCol2Max");
     document.getElementById("minMax").classList.toggle("minMaxMax");
     document.getElementById("shuffle").classList.toggle("shuffleMax");
     document.getElementById("repeat").classList.toggle("repeatMax");
@@ -97,10 +101,8 @@ const Layout = ({
 
   // for audioplayer
   const [currentTime, setCurrentTime] = useState(0);
-  // const [isLooped, setIsLooped] = useState(false);
-  // const [isShuffled, setIsShuffled] = useState(false);
   const [isMuted, setIsMuted] = useState({ muted: false, prevVolume: 0 });
-  const [resultsUnshuffled, setResultsUnshuffled] = useState([])
+  const [resultsUnshuffled, setResultsUnshuffled] = useState([]);
 
   // references to certain components
   const audioPlayer = useRef();
@@ -110,9 +112,9 @@ const Layout = ({
 
   // set default volume to 0.5
   useEffect(() => {
-    audioPlayer.current.volume = 0.5
-  }, [])
-  
+    audioPlayer.current.volume = 0.5;
+  }, []);
+
   // updating progressBar everytime current time of audio changes
   useEffect(() => {
     const seconds = Math.floor(audioPlayer.current.duration); //get rid of decimals (round down)
@@ -132,13 +134,11 @@ const Layout = ({
   const togglePlayPause = () => {
     if (audioPlayer.current.src !== "") {
       const prevValue = isPlaying;
-      setIsPlaying(!prevValue); //updates state
+      setIsPlaying(!prevValue);
       if (!prevValue) {
         audioPlayer.current.play(); //if true, plays audio and update animation for progressBar
-        // animationRef.current = requestAnimationFrame(whilePlaying)
       } else {
         audioPlayer.current.pause(); //if false, pauses audio and cancel animation for progressBar
-        // cancelAnimationFrame(animationRef.current);
       }
     }
   };
@@ -152,7 +152,7 @@ const Layout = ({
         100
       }%`
     );
-    setCurrentTime(progressBar.current.value); //updates state
+    setCurrentTime(progressBar.current.value);
   };
 
   const whilePlaying = () => {
@@ -200,7 +200,6 @@ const Layout = ({
     if (nowPlaying?.array?.length === 1) {
       audioPlayer.current.currentTime = 0;
     } else {
-      // audioPlayer.current.currentTime = audioPlayer.current.duration;
       if (nowPlaying.index === nowPlaying?.array?.length - 1) {
         const newIndex = 0;
         const newNowPlaying = { ...nowPlaying };
@@ -213,7 +212,8 @@ const Layout = ({
       }
     }
     audioPlayer.current.loop = false;
-    setIsLooped(false); //updates state
+    setIsLooped(false);
+    document.getElementById("repeat").classList.remove("isRepeating");
     changePlayerCurrentTime();
   };
 
@@ -236,7 +236,8 @@ const Layout = ({
       }
     }
     audioPlayer.current.loop = false;
-    setIsLooped(false); //updates state
+    setIsLooped(false);
+    document.getElementById("repeat").classList.remove("isRepeating");
     changePlayerCurrentTime();
   };
 
@@ -244,22 +245,22 @@ const Layout = ({
     const prevValue = isLooped;
     if (!prevValue) {
       audioPlayer.current.loop = true;
-      document.getElementById('repeat').classList.add('isRepeating')
+      document.getElementById("repeat").classList.add("isRepeating");
     } else {
       audioPlayer.current.loop = false;
-      document.getElementById('repeat').classList.remove('isRepeating')
+      document.getElementById("repeat").classList.remove("isRepeating");
     }
-    setIsLooped(!prevValue); //updates state
+    setIsLooped(!prevValue);
   };
 
   const handleShuffle = () => {
     //The Fisher-Yates algorith
-    console.log(nowPlaying)
+    console.log(nowPlaying);
     const prevValue = isShuffled;
     const newNowPlaying = nowPlaying;
     if (!prevValue) {
-      if (nowPlaying?.playlistIndex === 'searchResultPlaylist') {
-        setResultsUnshuffled(newNowPlaying?.array)
+      if (nowPlaying?.playlistIndex === "searchResultPlaylist") {
+        setResultsUnshuffled(newNowPlaying?.array);
       }
       const shuffledArray = [...newNowPlaying?.array];
       for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -269,21 +270,23 @@ const Layout = ({
         shuffledArray[i] = shuffledArray[j]; //swap element in array with a random element in array
         shuffledArray[j] = temp; //swap
       }
-      newNowPlaying.index = shuffledArray.indexOf(nowPlaying.array[nowPlaying.index])
+      newNowPlaying.index = shuffledArray.indexOf(
+        nowPlaying.array[nowPlaying.index]
+      );
       newNowPlaying.array = shuffledArray;
-      document.getElementById('shuffle').classList.add('isShuffling')
+      document.getElementById("shuffle").classList.add("isShuffling");
     } else {
-      let originalArray = []
-      if (nowPlaying?.playlistIndex === 'searchResultPlaylist') {
-        originalArray = resultsUnshuffled
+      let originalArray = [];
+      if (nowPlaying?.playlistIndex === "searchResultPlaylist") {
+        originalArray = resultsUnshuffled;
       } else {
-        originalArray = Object.values(
-          library[nowPlaying?.playlistIndex]
-        )[0];
+        originalArray = Object.values(library[nowPlaying?.playlistIndex])[0];
       }
-      newNowPlaying.index = originalArray.indexOf(nowPlaying.array[nowPlaying.index])
+      newNowPlaying.index = originalArray.indexOf(
+        nowPlaying.array[nowPlaying.index]
+      );
       newNowPlaying.array = originalArray; //back to original array
-      document.getElementById('shuffle').classList.remove('isShuffling')
+      document.getElementById("shuffle").classList.remove("isShuffling");
     }
     setNowPlaying(newNowPlaying);
     setIsShuffled(!prevValue);
@@ -316,7 +319,7 @@ const Layout = ({
       volumeBar.current.value = volDetails.prevVolume * 100;
     }
     volDetails.muted = !prevValue;
-    setIsMuted(volDetails); //updates state
+    setIsMuted(volDetails);
   };
 
   return (
@@ -405,17 +408,12 @@ const Layout = ({
 
         <div id="nowPlayingCol2">
           <div id="controls">
-            <IconContext.Provider
-              value={{ size: "30px"}}
-            >
+            <IconContext.Provider value={{ size: "30px" }}>
               <TbArrowsShuffle onClick={handleShuffle} id="shuffle" />
 
               {/* 1) if currentime is more than 3 seconds, change currenttime to 0 (play song from start)
           2) else, if its first song in playlist, go to prev url. if first song, go to last song*/}
-              <BsFillSkipStartFill
-                onClick={handleSkipStart}
-                id="skipStart"
-              />
+              <BsFillSkipStartFill onClick={handleSkipStart} id="skipStart" />
 
               {isPlaying ? (
                 <BsPauseFill onClick={togglePlayPause} className="pause" />
@@ -427,10 +425,7 @@ const Layout = ({
               <BsFillSkipEndFill onClick={handleSkipEnd} id="skipEnd" />
 
               {/* onclick 1) toggle such that repeats/does not repeat current track. default repeat for playlists (even with one song inside)*/}
-              <TbRepeatOnce
-                onClick={handleRepeatCurrentTrack}
-                id="repeat"
-              />
+              <TbRepeatOnce onClick={handleRepeatCurrentTrack} id="repeat" />
             </IconContext.Provider>
           </div>
 
@@ -449,8 +444,8 @@ const Layout = ({
               />
             ) : (
               <input
-              id="progressBar"
-              className="progressBarDisabled"
+                id="progressBar"
+                className="progressBarDisabled"
                 type="range"
                 disabled
                 defaultValue="0"
@@ -500,7 +495,7 @@ const Layout = ({
           />
 
           <div id="minMax">
-          {isMaximised ? <p>minimise</p> : <p>maximise</p>}
+            {isMaximised ? <p>minimise</p> : <p>maximise</p>}
             <IconContext.Provider
               value={{ size: "20px", className: "minMaxIcon" }}
             >
